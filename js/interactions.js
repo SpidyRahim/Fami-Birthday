@@ -379,7 +379,6 @@ class InteractionsManager {
   // =================================================================
   setupBirthdayCake() {
     const candles = document.querySelectorAll('.cake-candle');
-    const celebrationEl = document.getElementById('cake-celebration-msg');
     const micBtn = document.getElementById('cake-mic-btn');
     const micStatus = document.getElementById('mic-status-text');
 
@@ -389,37 +388,42 @@ class InteractionsManager {
     this.totalCandles = candles.length;
 
     candles.forEach((candle, idx) => {
-      const extinguish = () => {
-        if (candle.classList.contains('extinguished')) return;
-        candle.classList.add('extinguished');
-        this.extinguishedCandles++;
-
-        // Add stardust
-        if (window.Universe) {
-          window.Universe.illuminateStar(`Candle ${idx + 1}`);
+      let triggered = false;
+      const handleExtinguish = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
         }
-
-        // Spawn a puff of smoke
-        this.spawnSmokePuff(candle);
-
-        // Check if all candles extinguished
-        if (this.extinguishedCandles >= this.totalCandles) {
-          this.triggerCakeCelebration();
-        }
+        if (triggered || candle.classList.contains('extinguished')) return;
+        triggered = true;
+        this.extinguishCandle(candle, idx);
       };
 
-      candle.addEventListener('click', extinguish);
+      candle.addEventListener('click', handleExtinguish);
+      candle.addEventListener('pointerdown', handleExtinguish);
       candle.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          extinguish();
+          handleExtinguish(e);
         }
       });
     });
 
+    // Also support tapping anywhere in the candles row or near the flame to extinguish the next candle
+    const candlesRow = document.querySelector('.candles-row');
+    if (candlesRow) {
+      candlesRow.addEventListener('click', (e) => {
+        const unlit = document.querySelectorAll('.cake-candle:not(.extinguished)');
+        if (unlit.length > 0) {
+          this.extinguishCandle(unlit[0]);
+        }
+      });
+    }
+
     // Optional Microphone interaction
     if (micBtn) {
-      micBtn.addEventListener('click', () => {
+      micBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (this.isMicActive) {
           this.stopMicrophone();
           if (micStatus) micStatus.textContent = 'Enable Microphone';
@@ -431,14 +435,32 @@ class InteractionsManager {
     }
   }
 
+  extinguishCandle(candle, idx) {
+    if (!candle || candle.classList.contains('extinguished')) return;
+    candle.classList.add('extinguished');
+    this.extinguishedCandles = (this.extinguishedCandles || 0) + 1;
+
+    // Add stardust to constellation
+    if (window.Universe) {
+      window.Universe.illuminateStar(`Candle ${idx !== undefined ? idx + 1 : ''}`);
+      window.Universe.spawnShootingStar();
+    }
+
+    // Spawn a puff of smoke
+    this.spawnSmokePuff(candle);
+
+    // Check if all candles extinguished
+    const total = document.querySelectorAll('.cake-candle').length || 3;
+    if (this.extinguishedCandles >= total) {
+      this.triggerCakeCelebration();
+    }
+  }
+
   spawnSmokePuff(candle) {
     const smoke = document.createElement('div');
     smoke.className = 'smoke-particle';
-    const flame = candle.querySelector('.candle-flame');
-    if (flame) {
-      flame.parentElement.appendChild(smoke);
-      setTimeout(() => smoke.remove(), 1200);
-    }
+    candle.appendChild(smoke);
+    setTimeout(() => smoke.remove(), 1400);
   }
 
   triggerCakeCelebration() {
@@ -568,43 +590,75 @@ class InteractionsManager {
 
   startMicrophone(btn, status) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (status) status.textContent = 'Mic unavailable • Tap candles!';
       alert("Microphone access is not supported on this device/browser. You can simply tap the candles to extinguish them!");
       return;
     }
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      .then((stream) => {
+    // Disable AEC / Noise suppression so breath/blowing sound is not cancelled by the browser
+    navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      },
+      video: false
+    })
+      .then(async (stream) => {
         this.micStream = stream;
         this.isMicActive = true;
         btn.classList.add('active');
-        if (status) status.textContent = 'Listening... Blow on your mic!';
+        if (status) status.textContent = 'Listening... Blow on your mic now! 🌬️';
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContextClass();
+        if (audioCtx.state === 'suspended') {
+          await audioCtx.resume();
+        }
+
         const analyser = audioCtx.createAnalyser();
         analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.3;
         const source = audioCtx.createMediaStreamSource(stream);
         source.connect(analyser);
 
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        const freqData = new Uint8Array(analyser.frequencyBinCount);
+        const timeData = new Uint8Array(analyser.fftSize);
+        let lastBlowTime = 0;
 
         const checkBlowing = () => {
           if (!this.isMicActive) {
-            audioCtx.close();
+            try { audioCtx.close(); } catch (e) {}
             return;
           }
 
-          analyser.getByteFrequencyData(dataArray);
-          // Measure energy in low-frequency range typically caused by blowing air
-          let sum = 0;
-          for (let i = 0; i < 20; i++) {
-            sum += dataArray[i];
-          }
-          const avg = sum / 20;
+          analyser.getByteFrequencyData(freqData);
+          analyser.getByteTimeDomainData(timeData);
 
-          if (avg > 90) { // Blow threshold
-            const unlitCandles = document.querySelectorAll('.cake-candle:not(.extinguished)');
-            if (unlitCandles.length > 0) {
-              unlitCandles[0].click();
+          // 1. Measure low frequency rumble (characteristic of air puff / blowing on mic)
+          let lowSum = 0;
+          const lowBins = Math.min(18, freqData.length);
+          for (let i = 0; i < lowBins; i++) {
+            lowSum += freqData[i];
+          }
+          const lowAvg = lowSum / lowBins;
+
+          // 2. Measure raw peak amplitude in time domain
+          let maxDev = 0;
+          for (let i = 0; i < timeData.length; i++) {
+            const dev = Math.abs(timeData[i] - 128);
+            if (dev > maxDev) maxDev = dev;
+          }
+
+          // Blow condition: either strong low-frequency rumble or sudden acoustic puff
+          if (lowAvg > 30 || maxDev > 20) {
+            const now = Date.now();
+            if (now - lastBlowTime > 350) { // pleasant sequential extinguish
+              lastBlowTime = now;
+              const unlitCandles = document.querySelectorAll('.cake-candle:not(.extinguished)');
+              if (unlitCandles.length > 0) {
+                this.extinguishCandle(unlitCandles[0]);
+              }
             }
           }
 
@@ -615,7 +669,7 @@ class InteractionsManager {
       })
       .catch((err) => {
         console.warn("Microphone access declined or unavailable:", err);
-        if (status) status.textContent = 'Tap candles to blow';
+        if (status) status.textContent = 'Mic blocked • Tap candles to blow!';
       });
   }
 
