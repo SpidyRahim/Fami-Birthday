@@ -34,6 +34,7 @@ class InteractionsManager {
     this.setupEternalFlower();
     this.setupGiftBox();
     this.setupVoicePlayer();
+    this.setupLoveJar();
     this.setupFutureChapters();
     this.setupScratchCard();
     this.setupHiddenTreasures();
@@ -1319,5 +1320,219 @@ class InteractionsManager {
     if (revealBtn) {
       revealBtn.addEventListener('click', revealEntireSecret);
     }
+  }
+
+  // =================================================================
+  // FEATURE: THE LOVE JAR (10 FOLDED WHISPERS OF PRAISE)
+  // =================================================================
+  setupLoveJar() {
+    const jarContainer = document.getElementById('love-jar-container');
+    const jarCork = document.getElementById('jar-cork');
+    const flyingChirkut = document.getElementById('jar-flying-chirkut');
+    const interiorNotes = document.getElementById('jar-interior-notes');
+    const jarHint = document.getElementById('jar-tap-hint');
+    const overlay = document.getElementById('chirkut-overlay');
+    const badgeEl = document.getElementById('chirkut-badge');
+    const titleEl = document.getElementById('chirkut-title');
+    const bodyEl = document.getElementById('chirkut-body-text');
+    const nextBtn = document.getElementById('chirkut-next-btn');
+    const closeBtn = document.getElementById('chirkut-close-btn');
+
+    if (!jarContainer || !overlay) return;
+
+    const notes = FAMI_CONFIG.loveJar?.notes || [];
+    if (!notes.length) return;
+
+    let currentIndex = 0;
+    let isTransitioning = false;
+
+    // Helper: spawn magical sparkles around target element
+    const spawnSparkles = (targetEl, count = 12) => {
+      if (!targetEl) return;
+      const icons = ['✨', '💖', '🌸', '✦', '💕', '⭐'];
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('span');
+          sparkle.className = 'celebration-sparkle';
+          sparkle.textContent = icons[Math.floor(Math.random() * icons.length)];
+          sparkle.style.left = `${Math.random() * 80 + 10}%`;
+          sparkle.style.top = `${Math.random() * 80 + 10}%`;
+          sparkle.style.fontSize = `${Math.random() * 0.7 + 0.8}rem`;
+          sparkle.style.pointerEvents = 'none';
+          targetEl.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 1100);
+        }, i * 35);
+      }
+    };
+
+    // Step 1: Open cork, fly folded chirkut upwards from jar mouth, then unfold note in viewport center
+    const launchAndOpenNote = (index) => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      const note = notes[index];
+      if (!note) {
+        isTransitioning = false;
+        return;
+      }
+
+      // Pre-fill content into card
+      if (badgeEl) badgeEl.textContent = `Whisper #${note.id} of ${notes.length}`;
+      if (titleEl) titleEl.textContent = note.title;
+      if (bodyEl) bodyEl.textContent = note.text;
+
+      // 1. Visibly pop the cork off the jar opening
+      if (jarCork) jarCork.classList.add('popped');
+      if (jarHint) jarHint.textContent = `✨ Pulling out Whisper #${note.id} of ${notes.length}... ✨`;
+
+      // 2. Shake pile of notes inside jar
+      if (interiorNotes) {
+        interiorNotes.classList.add('shuffling');
+        setTimeout(() => interiorNotes.classList.remove('shuffling'), 500);
+      }
+
+      // 3. Launch flying chirkut out of jar neck
+      if (flyingChirkut) {
+        flyingChirkut.classList.remove('diving-back');
+        void flyingChirkut.offsetWidth; // force reflow
+        flyingChirkut.classList.add('launching');
+        spawnSparkles(jarContainer, 8);
+      }
+
+      if (window.Universe) {
+        window.Universe.illuminateStar(`Love Jar Note ${note.id}`);
+        window.Universe.spawnShootingStar();
+      }
+
+      // 4. Once the folded chirkut rises high into view (480ms), open the centered modal to unfold
+      setTimeout(() => {
+        if (flyingChirkut) {
+          flyingChirkut.classList.remove('launching');
+        }
+
+        overlay.classList.remove('folding-back');
+        overlay.classList.add('active', 'unfolding');
+
+        if (jarHint) jarHint.textContent = `✨ Reading Whisper #${note.id} of ${notes.length} ✨`;
+
+        const card = document.getElementById('chirkut-paper-card');
+        if (card) {
+          spawnSparkles(card, 14);
+        }
+
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 600);
+      }, 480);
+    };
+
+    // Step 2: "Pick Another Note" - Fold current card, dive back into jar mouth, shuffle, launch next note
+    const pickAnotherNote = () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      // 1. Current open card folds back into a small folded strip
+      overlay.classList.remove('unfolding');
+      overlay.classList.add('folding-back');
+
+      // 2. When card folds small (380ms), hide overlay to reveal jar and animate flying note diving down
+      setTimeout(() => {
+        overlay.classList.remove('active', 'folding-back');
+
+        if (flyingChirkut) {
+          flyingChirkut.classList.remove('launching');
+          void flyingChirkut.offsetWidth;
+          flyingChirkut.classList.add('diving-back');
+        }
+
+        // 3. Note enters mouth of jar (500ms after dive starts)
+        setTimeout(() => {
+          if (flyingChirkut) {
+            flyingChirkut.classList.remove('diving-back');
+          }
+
+          // Interior pile shuffles as note re-enters
+          if (interiorNotes) {
+            interiorNotes.classList.add('shuffling');
+            setTimeout(() => interiorNotes.classList.remove('shuffling'), 400);
+          }
+
+          // Advance to next note
+          currentIndex = (currentIndex + 1) % notes.length;
+
+          // 4. Launch next note out of jar!
+          setTimeout(() => {
+            isTransitioning = false;
+            launchAndOpenNote(currentIndex);
+          }, 220);
+        }, 500);
+      }, 380);
+    };
+
+    // Step 3: Close note completely (via Close button or backdrop click)
+    const closeNote = () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      overlay.classList.remove('unfolding');
+      overlay.classList.add('folding-back');
+
+      setTimeout(() => {
+        overlay.classList.remove('active', 'folding-back');
+
+        // Note dives back down into jar
+        if (flyingChirkut) {
+          flyingChirkut.classList.remove('launching');
+          void flyingChirkut.offsetWidth;
+          flyingChirkut.classList.add('diving-back');
+        }
+
+        setTimeout(() => {
+          if (flyingChirkut) {
+            flyingChirkut.classList.remove('diving-back');
+          }
+
+          // Cork smoothly seals jar mouth
+          if (jarCork) jarCork.classList.remove('popped');
+          if (jarHint) jarHint.textContent = '✨ Tap the Love Jar to pull out a folded note ✨';
+          isTransitioning = false;
+        }, 500);
+      }, 380);
+    };
+
+    jarContainer.addEventListener('click', () => {
+      if (!overlay.classList.contains('active')) {
+        launchAndOpenNote(currentIndex);
+      }
+    });
+
+    jarContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (!overlay.classList.contains('active')) {
+          launchAndOpenNote(currentIndex);
+        }
+      }
+    });
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pickAnotherNote();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeNote();
+      });
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeNote();
+      }
+    });
   }
 }

@@ -119,6 +119,14 @@ html, body {
     font-size: 1.45rem !important;
   }
 
+  .envelope-hint {
+    padding: 0.45rem 1rem !important;
+  }
+
+  .hint-text {
+    font-size: 0.95rem !important;
+  }
+
   /* Interactive Elements Touch Target Rules */
   button, 
   .control-btn, 
@@ -304,6 +312,31 @@ html, body {
 
   .scratch-secret-text {
     font-size: 0.98rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Love Jar Mobile */
+  .love-jar-interactive {
+    width: 175px !important;
+    height: 255px !important;
+  }
+
+  .jar-glass-body {
+    width: 155px !important;
+    height: 200px !important;
+  }
+
+  .chirkut-paper-card {
+    padding: 1.6rem 1.2rem !important;
+    max-width: 92vw !important;
+  }
+
+  .chirkut-title {
+    font-size: 1.45rem !important;
+  }
+
+  .chirkut-body-text {
+    font-size: 1.05rem !important;
     line-height: 1.5 !important;
   }
 }

@@ -199,7 +199,13 @@
           </div>
         </div>
 
-        <p class="envelope-hint" id="envelope-hint">✨ Tap the wax seal to unfold your secret letter ✨</p>
+        <div class="envelope-hint-wrapper">
+          <p class="envelope-hint" id="envelope-hint">
+            <span class="hint-sparkle" aria-hidden="true">✦</span>
+            <span class="hint-text">Tap the wax seal to unfold your secret letter</span>
+            <span class="hint-sparkle" aria-hidden="true">✦</span>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -665,6 +671,112 @@
               <!-- Populated from FAMI_CONFIG.voiceSection.letterText -->
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION: THE LOVE JAR (10 FOLDED WHISPERS OF PRAISE)
+           ============================================================= -->
+      <section id="section-love-jar" class="experience-section" aria-label="The Love Jar">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">10 Folded Whispers</p>
+          <h2 class="section-title">The Love Jar 🏺</h2>
+          <p class="section-description">Ten folded whispers from my heart to yours. Tap the jar to pull out a truth about how breathtaking and wonderful you are...</p>
+        </header>
+
+        <div class="love-jar-stage reveal-on-scroll">
+          <!-- The Interactive Glass Love Jar -->
+          <div class="love-jar-interactive" id="love-jar-container" tabindex="0" role="button" aria-label="Tap to pull a folded love note from the jar">
+            <div class="jar-glow-aura" aria-hidden="true"></div>
+
+            <!-- Jar Cork / Lid -->
+            <div class="jar-cork" id="jar-cork">
+              <span class="cork-texture"></span>
+            </div>
+
+            <!-- Flying Folded Chirkut that shoots up when opened -->
+            <div class="jar-flying-chirkut" id="jar-flying-chirkut" aria-hidden="true">
+              <div class="flying-paper-strip">
+                <span class="fps-crease"></span>
+                <span class="fps-tie"></span>
+                <span class="fps-heart">💌</span>
+              </div>
+            </div>
+
+            <!-- Jar Glass Neck & Ribbon -->
+            <div class="jar-neck">
+              <div class="jar-twine-wrap"></div>
+              <div class="jar-tag">
+                <span class="tag-string"></span>
+                <span class="tag-body">Love Jar • 10 Notes</span>
+              </div>
+            </div>
+
+            <!-- Glass Body with Folded Notes Visible Inside -->
+            <div class="jar-glass-body">
+              <div class="glass-reflection-left" aria-hidden="true"></div>
+              <div class="glass-reflection-right" aria-hidden="true"></div>
+
+              <!-- Realistic folded chirkuts (ভাজ করা চিরকুট) piled at the bottom -->
+              <div class="jar-interior-notes" id="jar-interior-notes" aria-hidden="true">
+                <div class="folded-paper-strip fps-1" title="Folded note 1"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-2" title="Folded note 2"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-3" title="Folded note 3"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-4" title="Folded note 4"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-5" title="Folded note 5"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-6" title="Folded note 6"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-7" title="Folded note 7"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-8" title="Folded note 8"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-9" title="Folded note 9"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+                <div class="folded-paper-strip fps-10" title="Folded note 10"><span class="fps-crease"></span><span class="fps-tie"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="jar-tap-hint" id="jar-tap-hint">✨ Tap the Love Jar to pull out a folded note ✨</p>
+
+          <!-- 3D Unfolding Love Note / Chirkut Display Modal -->
+          <div class="chirkut-overlay" id="chirkut-overlay" aria-hidden="true">
+            <div class="chirkut-paper-card" id="chirkut-paper-card">
+              <!-- Corner Decorative Stars -->
+              <span class="chirkut-corner tl">✦</span>
+              <span class="chirkut-corner tr">✦</span>
+              <span class="chirkut-corner bl">✦</span>
+              <span class="chirkut-corner br">✦</span>
+
+              <div class="chirkut-inner-content">
+                <div class="chirkut-header">
+                  <span class="chirkut-badge" id="chirkut-badge">Whisper #1 of 10</span>
+                  <button type="button" class="chirkut-close-btn" id="chirkut-close-btn" aria-label="Close note">✕</button>
+                </div>
+
+                <h3 class="chirkut-title" id="chirkut-title">Your Smile, My Sun</h3>
+                
+                <div class="chirkut-divider" aria-hidden="true">
+                  <span class="divider-line"></span>
+                  <span class="divider-heart">💖</span>
+                  <span class="divider-line"></span>
+                </div>
+
+                <p class="chirkut-body-text" id="chirkut-body-text">
+                  The way your eyes crinkle when you laugh with your whole heart... that single view holds more light and joy than all the billion stars in this universe combined.
+                </p>
+
+                <div class="chirkut-signoff">
+                  <span class="signoff-sub">Forever & always,</span>
+                  <span class="signoff-name">Rahim ❤️</span>
+                </div>
+
+                <div class="chirkut-actions">
+                  <button type="button" class="chirkut-pick-btn" id="chirkut-next-btn">
+                    <span>Pick Another Note</span>
+                    <span class="btn-icon">💌</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 

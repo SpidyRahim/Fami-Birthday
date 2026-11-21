@@ -400,3 +400,109 @@
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(244, 202, 219, 0.45), inset 0 0 25px rgba(244, 202, 219, 0.25);
   }
 }
+
+/* ===================================================================
+   LOVE JAR & 3D PAPER UNFOLD/FOLD ANIMATIONS
+   =================================================================== */
+
+/* Jar Cork Pop Animation - Visibly lifts and tilts off jar mouth */
+@keyframes cork-pop {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  40% {
+    transform: translateY(-52px) translateX(-22px) rotate(-34deg);
+  }
+  75% {
+    transform: translateY(-44px) translateX(-18px) rotate(-28deg);
+  }
+  100% {
+    transform: translateY(-48px) translateX(-20px) rotate(-30deg);
+  }
+}
+
+/* Flying Chirkut shooting upwards from open jar neck */
+@keyframes chirkut-fly-out {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.35) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -20px) scale(0.75) rotate(-8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-50%, -100px) scale(1.15) rotate(14deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -165px) scale(1.4) rotate(0deg);
+  }
+}
+
+/* Flying Chirkut diving back down into open jar mouth */
+@keyframes chirkut-dive-in {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -165px) scale(1.4) rotate(0deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -90px) scale(1.05) rotate(-12deg);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translate(-50%, -15px) scale(0.65) rotate(6deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.35) rotate(0deg);
+  }
+}
+
+/* Jar Interior Notes Shuffling when a note enters or leaves */
+@keyframes notes-shuffle {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-4px) rotate(1deg); }
+  50% { transform: translateY(2px) rotate(-1deg); }
+  75% { transform: translateY(-2px) rotate(0.5deg); }
+  100% { transform: translateY(0); }
+}
+
+/* 3D Paper Unfold Animation (Rising & Unfolding in dead center of viewport) */
+@keyframes chirkut-unfold-3d {
+  0% {
+    opacity: 0;
+    transform: translateY(45px) scale(0.35) rotateX(60deg);
+    filter: blur(3px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02) rotateX(-3deg);
+    filter: blur(0);
+  }
+  85% {
+    transform: translateY(2px) scale(0.99) rotateX(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+
+/* 3D Paper Fold Back Animation (Folding up cleanly in center before diving back) */
+@keyframes chirkut-fold-back-3d {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+  45% {
+    opacity: 0.95;
+    transform: translateY(25px) scale(0.6) rotateX(45deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.18) rotateX(75deg);
+  }
+}

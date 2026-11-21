@@ -258,6 +258,75 @@ Rahim`
     ]
   },
 
+  // Section: The Love Jar (10 Folded Whispers of Praise)
+  loveJar: {
+    tagline: "10 Folded Whispers",
+    title: "The Love Jar 🏺",
+    description: "Ten folded whispers from my heart to yours. Tap the jar to pull out a truth about how breathtaking and wonderful you are...",
+    notes: [
+      {
+        id: 1,
+        title: "Your Smile, My Sun",
+        text: "The way your eyes crinkle when you laugh with your whole heart... that single view holds more light and joy than all the billion stars in this universe combined.",
+        color: "#F4CADB"
+      },
+      {
+        id: 2,
+        title: "Sanctuary in Your Voice",
+        text: "On the heaviest days, hearing you say my name is like stepping into a warm, quiet room after hours in a cold storm. Your voice is my peace, my comfort, and my home.",
+        color: "#D9B8E4"
+      },
+      {
+        id: 3,
+        title: "The Depth of Your Eyes",
+        text: "In your eyes, I don't just see beauty—I see honesty, kindness, and a quiet universe where my soul feels endlessly safe, cherished, and understood.",
+        color: "#F6E9D2"
+      },
+      {
+        id: 4,
+        title: "Your Pure, Tender Heart",
+        text: "The genuine empathy you carry for everyone, the little gentle things you do without even realizing... you make this world a softer, kinder place just by being in it.",
+        color: "#E8C5E5"
+      },
+      {
+        id: 5,
+        title: "My Favorite Artwork",
+        text: "If a master artist spent ten lifetimes painting the perfect soul, they would still fail to capture the grace, warmth, humor, and pure magic that you carry effortlessly every single day.",
+        color: "#FFD1DC"
+      },
+      {
+        id: 6,
+        title: "Strength Behind Your Softness",
+        text: "Behind your soft, delicate smile lies a quiet, resilient strength that inspires me every day. You handle life with so much poise and dignity that I cannot help but admire you endlessly.",
+        color: "#D4B2D8"
+      },
+      {
+        id: 7,
+        title: "Your Laugh is My Greatest Victory",
+        text: "Whenever I say something silly and manage to make you burst into that uncontrollable, melodious laugh—in that exact moment, I feel like the happiest and richest man alive.",
+        color: "#FCE4EC"
+      },
+      {
+        id: 8,
+        title: "The Colors You Bring",
+        text: "Before you walked into my life, everything was just black and white. You brought vibrant color, sweet fragrance, and laughter into corners of my soul that had forgotten how to bloom.",
+        color: "#E1BEE7"
+      },
+      {
+        id: 9,
+        title: "Effortlessly, Breathlessly Gorgeous",
+        text: "Whether you are dressed up for an occasion or in your comfiest oversized pajama with messy hair, you are undeniably and breathlessly the most stunning human being my eyes have ever seen.",
+        color: "#FFF0F5"
+      },
+      {
+        id: 10,
+        title: "My Forever Choice",
+        text: "In every lifetime, across every galaxy, in every parallel dimension... out of billions of souls, my heart will always recognize yours and choose you without a second's hesitation.",
+        color: "#F8BBD0"
+      }
+    ]
+  },
+
   // Section: Golden Scratch Card Secret
   scratchSecret: {
     tagline: "A Hidden Promise",

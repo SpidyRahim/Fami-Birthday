@@ -670,6 +670,7 @@ body {
   background: linear-gradient(120deg, #9c27b0 0%, #e91e63 25%, #ff4081 50%, #7b1fa2 75%, #e91e63 100%);
   background-size: 250% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: text-shimmer-glow 3.5s ease-in-out infinite;
   white-space: nowrap;
@@ -937,15 +938,50 @@ body {
   pointer-events: none;
 }
 
+.envelope-hint-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+  z-index: 10;
+}
+
 .envelope-hint {
-  margin-top: 1.8rem;
-  font-size: 0.88rem;
-  color: var(--color-champagne);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-weight: 400;
-  animation: pulse-soft 2.4s infinite ease-in-out;
-  text-shadow: 0 0 12px rgba(246, 233, 210, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  text-align: center;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-full);
+  background: rgba(36, 27, 53, 0.7);
+  border: 1px solid rgba(244, 202, 219, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 16px rgba(217, 184, 228, 0.25);
+  animation: pulse-soft 2.6s infinite ease-in-out;
+  transition: opacity 0.5s ease;
+}
+
+.hint-text {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #FFF9FC 0%, #F4CADB 45%, #F6E9D2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 4px rgba(244, 202, 219, 0.3));
+}
+
+.hint-sparkle {
+  color: #ffd166;
+  font-size: 0.95rem;
+  filter: drop-shadow(0 0 8px #ffd166);
+  animation: sparkle-spin-twinkle 2.8s infinite ease-in-out;
 }
 
 /* ===================================================================
@@ -2733,6 +2769,7 @@ body.universe-climax {
   line-height: 1;
   background: linear-gradient(135deg, #FFF9FC 0%, #F4CADB 60%, #D9B8E4 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 8px rgba(244, 202, 219, 0.4));
 }
@@ -3197,4 +3234,511 @@ body.universe-climax {
 .scratch-reveal-btn:hover {
   background: rgba(244, 202, 219, 0.2);
   color: var(--color-champagne);
+}
+
+/* ===================================================================
+   SECTION: THE LOVE JAR (10 FOLDED WHISPERS OF PRAISE)
+   =================================================================== */
+.love-jar-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+.love-jar-interactive {
+  position: relative;
+  width: 200px;
+  height: 290px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.35s ease;
+  user-select: none;
+}
+
+.love-jar-interactive:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+.jar-glow-aura {
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244, 202, 219, 0.32) 0%, rgba(217, 184, 228, 0.18) 50%, transparent 75%);
+  filter: blur(28px);
+  pointer-events: none;
+  animation: pulse-soft 4s infinite ease-in-out;
+}
+
+/* Jar Cork */
+.jar-cork {
+  width: 82px;
+  height: 32px;
+  background: linear-gradient(180deg, #c49a6c 0%, #a0784d 60%, #7e5a36 100%);
+  border-radius: 6px 6px 3px 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.25);
+  position: relative;
+  z-index: 7;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom center;
+}
+
+.jar-cork.popped {
+  animation: cork-pop 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Flying / Rising Chirkut shooting out of jar neck */
+.jar-flying-chirkut {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.4);
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.jar-flying-chirkut.launching {
+  animation: chirkut-fly-out 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.jar-flying-chirkut.diving-back {
+  animation: chirkut-dive-in 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.flying-paper-strip {
+  position: relative;
+  width: 64px;
+  height: 26px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #fffdf8 0%, #faecd7 50%, #f4dec1 100%);
+  border: 1px solid rgba(217, 166, 181, 0.85);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(244, 202, 219, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flying-paper-strip .fps-crease {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: rgba(140, 95, 55, 0.4);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.flying-paper-strip .fps-tie {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 7px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #d88a9e 0%, #ba6378 100%);
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.flying-paper-strip .fps-heart {
+  position: absolute;
+  font-size: 0.8rem;
+  top: -6px;
+  right: -6px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  animation: pulse-soft 2s infinite ease-in-out;
+}
+
+/* Jar Neck */
+.jar-neck {
+  width: 96px;
+  height: 26px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(217, 184, 228, 0.12) 50%, rgba(255, 255, 255, 0.2) 100%);
+  border-left: 2px solid rgba(255, 255, 255, 0.45);
+  border-right: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  position: relative;
+  z-index: 4;
+}
+
+.jar-twine-wrap {
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, #b08d57, #b08d57 3px, #8c6d3b 3px, #8c6d3b 6px);
+  transform: translateY(-50%);
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.jar-tag {
+  position: absolute;
+  top: 14px;
+  right: -55px;
+  background: #f7ecd7;
+  color: #3b224c;
+  border: 1px solid rgba(217, 166, 181, 0.6);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transform: rotate(8deg);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Glass Body */
+.jar-glass-body {
+  position: relative;
+  width: 175px;
+  height: 230px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(217, 184, 228, 0.1) 40%, rgba(244, 202, 219, 0.14) 70%, rgba(255, 255, 255, 0.18) 100%);
+  border-radius: 18px 18px 30px 30px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(244, 202, 219, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 3;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+}
+
+.glass-reflection-left {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 12px;
+  height: 80%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.1) 80%, transparent 100%);
+  border-radius: 6px;
+  filter: blur(1.5px);
+  pointer-events: none;
+}
+
+.glass-reflection-right {
+  position: absolute;
+  top: 18px;
+  right: 14px;
+  width: 6px;
+  height: 60%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 4px;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+/* Realistic Piled Folded Chirkuts at Bottom of Glass Jar */
+.jar-interior-notes {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.jar-interior-notes.shuffling {
+  animation: notes-shuffle 0.5s ease-in-out;
+}
+
+.folded-paper-strip {
+  position: absolute;
+  width: 54px;
+  height: 20px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #fffcf5 0%, #f8ebd5 55%, #edd4b2 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(140, 95, 45, 0.25);
+  border: 0.5px solid rgba(195, 155, 115, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.folded-paper-strip .fps-crease {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  right: 3px;
+  height: 1px;
+  background: rgba(140, 95, 55, 0.35);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
+.folded-paper-strip .fps-tie {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 6px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #d88a9e 0%, #ba6378 100%);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.folded-paper-strip .fps-tie::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 3px;
+  background: #fff0f5;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+/* Realistic stacking pile positions inside jar */
+/* Layer 1 (Jar Floor) */
+.fps-1 { bottom: 4px; left: 8px; transform: rotate(-10deg); }
+.fps-2 { bottom: 6px; left: 52px; transform: rotate(8deg); background: linear-gradient(135deg, #fff5f8 0%, #fcd5e2 100%); }
+.fps-3 { bottom: 5px; right: 8px; transform: rotate(-22deg); }
+
+/* Layer 2 (Resting on floor layer) */
+.fps-4 { bottom: 22px; left: 14px; transform: rotate(24deg); background: linear-gradient(135deg, #faf5ff 0%, #ebd7f7 100%); }
+.fps-5 { bottom: 24px; left: 56px; transform: rotate(-12deg); }
+.fps-6 { bottom: 26px; right: 12px; transform: rotate(18deg); background: linear-gradient(135deg, #fff9f0 0%, #fde4be 100%); }
+
+/* Layer 3 (Middle stack) */
+.fps-7 { bottom: 44px; left: 16px; transform: rotate(-28deg); background: linear-gradient(135deg, #fff5f8 0%, #fcd5e2 100%); }
+.fps-8 { bottom: 46px; right: 18px; transform: rotate(14deg); }
+.fps-9 { bottom: 62px; left: 38px; transform: rotate(-6deg); background: linear-gradient(135deg, #faf5ff 0%, #ebd7f7 100%); }
+
+/* Layer 4 (Top of the pile) */
+.fps-10 { bottom: 78px; left: 44px; transform: rotate(12deg); background: linear-gradient(135deg, #fffdf8 0%, #faecd7 100%); }
+
+/* Subtle hover settling physics */
+.love-jar-interactive:hover .folded-paper-strip {
+  filter: brightness(1.05);
+}
+.love-jar-interactive:hover .fps-10 {
+  transform: translateY(-3px) rotate(16deg);
+}
+.love-jar-interactive:hover .fps-9 {
+  transform: translateY(-2px) rotate(-9deg);
+}
+.love-jar-interactive:hover .fps-8 {
+  transform: translateY(-1px) rotate(17deg);
+}
+
+.jar-tap-hint {
+  margin-top: 1.4rem;
+  font-size: 0.92rem;
+  color: var(--color-champagne);
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: opacity 0.4s ease;
+}
+
+/* ===================================================================
+   3D UNFOLDING CHIRKUT MODAL OVERLAY
+   =================================================================== */
+.chirkut-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 9, 24, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.chirkut-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.chirkut-paper-card {
+  position: relative;
+  width: 90vw;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  margin: auto;
+  background: linear-gradient(135deg, #fffcf5 0%, #fcf5e7 50%, #f7ebd5 100%);
+  border-radius: 14px;
+  border: 1.5px solid rgba(217, 166, 181, 0.65);
+  box-shadow: 0 25px 75px rgba(0, 0, 0, 0.8), 0 0 40px rgba(244, 202, 219, 0.45);
+  padding: 2.2rem 1.8rem;
+  color: #241433;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.chirkut-overlay.unfolding .chirkut-paper-card {
+  animation: chirkut-unfold-3d 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.chirkut-overlay.folding-back .chirkut-paper-card {
+  animation: chirkut-fold-back-3d 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.chirkut-corner {
+  position: absolute;
+  font-size: 0.9rem;
+  color: #d4a373;
+  pointer-events: none;
+  animation: corner-sparkle 3s infinite ease-in-out;
+}
+
+.chirkut-corner.tl { top: 12px; left: 12px; }
+.chirkut-corner.tr { top: 12px; right: 12px; animation-delay: 0.75s; }
+.chirkut-corner.bl { bottom: 12px; left: 12px; animation-delay: 1.5s; }
+.chirkut-corner.br { bottom: 12px; right: 12px; animation-delay: 2.25s; }
+
+.chirkut-inner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.chirkut-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.8rem;
+}
+
+.chirkut-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8c3b64;
+  background: rgba(244, 202, 219, 0.45);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.chirkut-close-btn {
+  background: transparent;
+  border: none;
+  color: #8c3b64;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50%;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.chirkut-close-btn:hover {
+  transform: scale(1.15);
+  background: rgba(217, 166, 181, 0.25);
+}
+
+.chirkut-title {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #4b1b46;
+  margin: 0.4rem 0 0.2rem;
+}
+
+.chirkut-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 180px;
+  margin-bottom: 1.1rem;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(140, 59, 100, 0.4), transparent);
+}
+
+.divider-heart {
+  font-size: 0.95rem;
+  animation: romantic-heartbeat 1.6s infinite ease-in-out;
+}
+
+.chirkut-body-text {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: #2b143a;
+  margin-bottom: 1.3rem;
+  max-width: 420px;
+}
+
+.chirkut-signoff {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.signoff-sub {
+  font-size: 0.8rem;
+  color: #7a5482;
+  font-style: italic;
+}
+
+.signoff-name {
+  font-family: var(--font-handwritten);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #b83262;
+  margin-top: 1px;
+}
+
+.chirkut-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.chirkut-pick-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.8rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #441f54 0%, #6b2659 50%, #8e2b5b 100%);
+  border: 1.5px solid #F4CADB;
+  color: #FFF9FC;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(184, 50, 98, 0.4);
+  transition: all 0.3s ease;
+}
+
+.chirkut-pick-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(184, 50, 98, 0.6), 0 0 20px rgba(244, 202, 219, 0.6);
 }
