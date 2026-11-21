@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>A Universe Made for Fami ❤️</title>
+  <meta name="description"
+    content="One person. A thousand memories. An entire universe of love. A personal birthday experience created exclusively for Fami." />
+
+  <!-- Favicon SVG -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>" />
+
+  <!-- Google Fonts: Cormorant Garamond (Headings), Inter (Body), Caveat (Handwritten) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+
+  <!-- Dynamic Starfield Canvas & Ambient Nebula Layer -->
+  <canvas id="universe-canvas" aria-hidden="true"></canvas>
+  <div class="ambient-nebula" aria-hidden="true"></div>
+
+  <!-- SVG Gradients Definition -->
+  <svg width="0" height="0" style="position: absolute;">
+    <defs>
+      <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#F4CADB" />
+        <stop offset="50%" stop-color="#D9A6B5" />
+        <stop offset="100%" stop-color="#D9B8E4" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ===============================================================
+       FLOATING CONTROLS (Top Bar & Counters)
+       =============================================================== -->
+  <!-- Secret Discovery Counter Pill -->
+  <div id="secrets-tracker-pill" class="secrets-tracker-pill" aria-label="Secrets discovered">
+    <span class="icon">✨</span>
+    <span>Secrets: <strong id="tracker-count">0/5</strong></span>
+  </div>
+
+  <!-- Floating Controls (Ambient Music Toggle) -->
+  <aside class="floating-controls" aria-label="Audio Controls">
+    <button id="music-toggle-btn" class="control-btn" type="button" aria-label="Toggle ambient music">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+      </svg>
+      <span id="music-status-text">Music: Off</span>
+    </button>
+  </aside>
+
+  <!-- Constellation Meter ("The Little Universe Remembers") -->
+  <div id="constellation-meter" class="constellation-meter" aria-label="Constellation stars illuminated">
+    <span>Constellation:</span>
+    <span class="dots-container" aria-hidden="true"></span>
+    <span id="meter-discovered-count">0/23</span>
+  </div>
+
+  <div id="app-container">
+
+    <!-- ===============================================================
+         SECTION 01: PASSWORD GATE
+         =============================================================== -->
+    <section id="section-password" aria-label="Password Gate">
+      <div class="password-card glass-card">
+        <div class="lock-symbol-wrapper" aria-hidden="true">
+          <svg class="lock-svg" viewBox="0 0 24 24">
+            <path class="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4" />
+            <rect x="4" y="11" width="16" height="11" rx="3" ry="3" />
+            <circle cx="12" cy="16" r="1.5" />
+          </svg>
+        </div>
+        <h1>A Universe Made for Fami</h1>
+        <p class="subtitle">One person. A thousand memories. An entire universe of love.</p>
+
+        <form id="password-form" class="password-form" novalidate>
+          <div class="input-container">
+            <input type="password" id="password-input" class="password-input" placeholder="Whisper the secret code..."
+              autocomplete="current-password" aria-label="Secret Password" required />
+          </div>
+          <div id="password-error" class="error-message" role="alert"></div>
+          <button type="submit" id="unlock-btn" class="btn-primary">
+            <span>Unlock Secret</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+          <p class="secret-hint-text">A little secret awaits you...</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         SECTION 02: THE SECRET ENTRANCE (ROYAL WAX SEAL & UNFOLDING PARCHMENT)
+         =============================================================== -->
+    <section id="section-envelope" aria-label="Secret Royal Envelope Entrance">
+      <!-- Animated Celestial Shooting Stars Layer -->
+      <div class="shooting-stars-layer" aria-hidden="true">
+        <div class="shooting-star-streak ss1"></div>
+        <div class="shooting-star-streak ss2"></div>
+        <div class="shooting-star-streak ss3"></div>
+      </div>
+
+      <!-- Animated Celestial Aura & Floating Stardust and Hearts -->
+      <div class="envelope-cosmic-aura" aria-hidden="true"></div>
+      <div class="envelope-floating-particles" aria-hidden="true">
+        <span class="env-particle ep1">✦</span>
+        <span class="env-particle ep2">💖</span>
+        <span class="env-particle ep3">✨</span>
+        <span class="env-particle ep4">🌸</span>
+        <span class="env-particle ep5">💕</span>
+        <span class="env-particle ep6">✧</span>
+        <span class="env-particle ep7">💖</span>
+        <span class="env-particle ep8">✨</span>
+        <span class="env-particle ep9">🌸</span>
+        <span class="env-particle ep10">✦</span>
+        <span class="env-particle ep11">💕</span>
+        <span class="env-particle ep12">✨</span>
+      </div>
+
+      <div class="envelope-wrapper">
+        <div id="envelope-container" class="royal-envelope floating-envelope" tabindex="0" role="button"
+          aria-label="Tap the wax seal to open the letter">
+          <!-- Envelope Back Body -->
+          <div class="envelope-back"></div>
+
+          <!-- Interior Celestial Lining -->
+          <div class="envelope-lining"></div>
+
+          <!-- The Unfolding Parchment Letter -->
+          <div class="unfolding-letter" id="unfolding-letter">
+            <div class="parchment-gold-border"></div>
+            <!-- Vintage Ornamental Gold Corners -->
+            <div class="parchment-corner top-left" aria-hidden="true">✦</div>
+            <div class="parchment-corner top-right" aria-hidden="true">✦</div>
+            <div class="parchment-corner bottom-left" aria-hidden="true">✦</div>
+            <div class="parchment-corner bottom-right" aria-hidden="true">✦</div>
+
+            <div class="parchment-content">
+              <div class="parchment-salutation">
+                <span class="salutation-heart left">💖</span>
+                <span class="salutation-text">My Dearest Fami</span>
+                <span class="salutation-heart right">💖</span>
+              </div>
+              <p class="parchment-message">
+                "Somewhere in this endless universe, there is a little world that belongs only to you."
+              </p>
+              <p class="parchment-sub">
+                Today, the stars align just to illuminate your smile.
+              </p>
+              <div class="parchment-signature">
+                <span class="sig-prefix">With all my love,</span>
+                <span class="sig-author">Rahim ❤️</span>
+              </div>
+              <button id="enter-universe-btn" class="parchment-btn" type="button">
+                <span>Open Your Little Universe</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+            <!-- Vintage Paper Watermark -->
+            <div class="parchment-watermark" aria-hidden="true">✦</div>
+          </div>
+
+          <!-- Envelope Pocket (Bottom & Sides) with Gold Stitching -->
+          <div class="envelope-pocket">
+            <div class="pocket-gold-trim"></div>
+          </div>
+
+          <!-- Top Flap -->
+          <div class="envelope-flap">
+            <div class="flap-gold-trim"></div>
+          </div>
+
+          <!-- 3D Realistic Embossed Rose-Gold Wax Seal -->
+          <div class="wax-seal" id="wax-seal" aria-hidden="true">
+            <div class="wax-seal-drips"></div>
+            <div class="wax-seal-ring">
+              <span class="wax-seal-inner">F</span>
+            </div>
+            <div class="wax-seal-sparkles">
+              <span>✦</span><span>✧</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="envelope-hint" id="envelope-hint">✨ Tap the wax seal to unfold your secret letter ✨</p>
+      </div>
+    </section>
+
+    <!-- ===============================================================
+         MAIN CONTINUOUS SCROLL EXPERIENCE (SECTIONS 03 TO 10)
+         =============================================================== -->
+    <main id="universe-experience">
+
+      <!-- =============================================================
+           SECTION 03: WELCOME TO YOUR UNIVERSE
+           ============================================================= -->
+      <section id="section-welcome" class="experience-section" aria-label="Welcome to Your Universe">
+        <div class="welcome-moon-glow" aria-hidden="true"></div>
+        <div class="welcome-moon-icon" aria-hidden="true">
+          <span class="hidden-symbol" data-treasure-id="star" title="A tiny shimmering star" role="button" tabindex="0"
+            aria-label="Find star secret">★</span>
+        </div>
+        <h1 class="welcome-heading">Welcome to Your Own Little Universe, Fami.</h1>
+        <p class="welcome-subtext">Today, the stars are a little brighter because this day belongs to you.</p>
+        <button id="welcome-begin-btn" class="btn-primary" type="button">
+          <span>Let's Begin</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            aria-hidden="true">
+            <path d="M12 5v14M19 12l-7 7-7-7" />
+          </svg>
+        </button>
+        <p class="welcome-subnote">Scroll down or click to wander through your universe</p>
+      </section>
+
+      <!-- =============================================================
+           SECTION 04: OUR STORY, OUR LITTLE WORLD (TIMELINE)
+           ============================================================= -->
+      <section id="section-story" class="experience-section" aria-label="Our Story, Our Little World">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Timeline of Moments</p>
+          <h2 class="section-title">
+            Our Story, Our Little World
+            <span class="hidden-symbol" data-treasure-id="flower" title="A delicate blossom" role="button" tabindex="0"
+              aria-label="Find flower secret" style="font-size: 1.2rem; margin-left: 0.4rem;">🌸</span>
+          </h2>
+          <p class="section-description">Every chapter of our journey holds a fragrance of memories that never fades.
+          </p>
+        </header>
+
+        <div class="timeline-container">
+          <div class="timeline-line" aria-hidden="true"></div>
+          <div id="timeline-list">
+            <!-- Dynamically populated from FAMI_CONFIG.timeline in js/memories.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           NEW SECTION: THE ORBIT OF OUR MEMORIES (3D CELESTIAL GALLERY)
+           ============================================================= -->
+      <section id="section-orbit-gallery" class="experience-section" aria-label="The Orbit of Our Memories">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Constellation of Moments</p>
+          <h2 class="section-title">The Orbit of Our Memories</h2>
+          <p class="section-description">
+            Moments suspended in time, revolving like distant stars in our own private galaxy.
+            Drag or swipe across the cosmos to explore.
+          </p>
+        </header>
+
+        <div class="orbit-gallery-viewport reveal-on-scroll">
+          <div class="orbit-scene" id="orbit-scene">
+            <!-- Center Celestial Core Glow -->
+            <div class="orbit-center-glow" aria-hidden="true">
+              <div class="core-sun"></div>
+            </div>
+            <div class="orbit-carousel" id="orbit-carousel">
+              <!-- Dynamically populated 3D photo cards from assets/images/gallery/ -->
+            </div>
+          </div>
+
+          <!-- Interactive Orbit Controls -->
+          <div class="orbit-controls" aria-label="Gallery Controls">
+            <button id="orbit-prev-btn" class="control-btn orbit-nav-btn" type="button" aria-label="Previous photo">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button id="orbit-pause-btn" class="control-btn orbit-action-btn" type="button"
+              aria-label="Pause or play auto-rotation">
+              <span id="orbit-pause-text">Pause Rotation</span>
+            </button>
+            <button id="orbit-next-btn" class="control-btn orbit-nav-btn" type="button" aria-label="Next photo">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+
+          <p class="orbit-swipe-hint">
+            <span>‹‹ Drag or swipe sideways to rotate • Tap card to focus ››</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION 05: 23 REASONS WHY YOU'RE SPECIAL
+           ============================================================= -->
+      <section id="section-reasons" class="experience-section" aria-label="23 Reasons Why You're Special">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">23 Beautiful Reasons</p>
+          <h2 class="section-title">
+            23 Reasons Why You're Special
+            <span class="hidden-symbol" data-treasure-id="butterfly" title="A graceful butterfly" role="button"
+              tabindex="0" aria-label="Find butterfly secret" style="font-size: 1.2rem; margin-left: 0.4rem;">🦋</span>
+          </h2>
+          <p class="section-description">Twenty-three little whispers of gratitude, woven just for you. Tap each card to
+            uncover what lies within.</p>
+        </header>
+
+        <div id="reasons-grid" class="reasons-grid">
+          <!-- Dynamically populated 23 cards from FAMI_CONFIG.reasons in js/interactions.js -->
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION 06: MAKE A WISH, BIRTHDAY GIRL! & THE ETERNAL BLOOM
+           ============================================================= -->
+      <section id="section-cake" class="experience-section" aria-label="Make a Wish Birthday Cake">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Sweet Celebration</p>
+          <h2 class="section-title">
+            Make a Wish, Birthday Girl!
+            <span class="hidden-symbol" data-treasure-id="heart" title="A loving heart" role="button" tabindex="0"
+              aria-label="Find heart secret" style="font-size: 1.2rem; margin-left: 0.4rem;">♥</span>
+          </h2>
+          <p class="section-description">Close your eyes, make the sweetest wish from the depths of your heart, and blow
+            out the candles.</p>
+        </header>
+
+        <!-- Luxury Artisanal Birthday Cake -->
+        <div class="cake-stage reveal-on-scroll">
+          <div class="cake-container">
+            <!-- Candles Row with Realistic Slender Candles -->
+            <div class="candles-row" aria-label="Birthday Candles">
+              <div class="cake-candle" tabindex="0" role="button" aria-label="Candle 1: tap to blow out">
+                <div class="candle-wick"></div>
+                <div class="candle-flame">
+                  <div class="flame-glow"></div>
+                  <div class="flame-body"></div>
+                  <div class="flame-core"></div>
+                </div>
+              </div>
+              <div class="cake-candle candle-center" tabindex="0" role="button" aria-label="Candle 2: tap to blow out">
+                <div class="candle-wick"></div>
+                <div class="candle-flame">
+                  <div class="flame-glow"></div>
+                  <div class="flame-body"></div>
+                  <div class="flame-core"></div>
+                </div>
+              </div>
+              <div class="cake-candle" tabindex="0" role="button" aria-label="Candle 3: tap to blow out">
+                <div class="candle-wick"></div>
+                <div class="candle-flame">
+                  <div class="flame-glow"></div>
+                  <div class="flame-body"></div>
+                  <div class="flame-core"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cake Topper -->
+            <div class="cake-topper" aria-hidden="true">
+              <span class="topper-sparkle">✦</span>
+              <span class="topper-heart">♥</span>
+              <span class="topper-sparkle">✦</span>
+            </div>
+
+            <!-- Top Tier (Blush Pink Velvet Fondant with Champagne Drips) -->
+            <div class="cake-tier-top">
+              <div class="tier-frosting-top"></div>
+              <div class="drip-row">
+                <span class="drip d1"></span>
+                <span class="drip d2"></span>
+                <span class="drip d3"></span>
+                <span class="drip d4"></span>
+                <span class="drip d5"></span>
+                <span class="drip d6"></span>
+              </div>
+              <div class="sugar-pearls pearls-top"></div>
+            </div>
+
+            <!-- Bottom Tier (Lavender Silk Fondant with Gold Embellishment) -->
+            <div class="cake-tier-bottom">
+              <div class="tier-frosting-mid"></div>
+              <div class="drip-row drip-bottom">
+                <span class="drip d7"></span>
+                <span class="drip d8"></span>
+                <span class="drip d9"></span>
+                <span class="drip d10"></span>
+                <span class="drip d11"></span>
+                <span class="drip d12"></span>
+                <span class="drip d13"></span>
+              </div>
+              <div class="tier-gold-ribbon"></div>
+              <div class="sugar-pearls pearls-bottom"></div>
+            </div>
+
+            <!-- Luxury Glass & Rose-Gold Pedestal Stand -->
+            <div class="cake-stand">
+              <div class="stand-plate"></div>
+              <div class="stand-stem"></div>
+              <div class="stand-base"></div>
+            </div>
+          </div>
+
+          <p class="cake-instructions">Tap each candle to blow it out</p>
+
+          <div class="cake-controls">
+            <button id="cake-mic-btn" class="control-btn" type="button" aria-label="Blow out candles with microphone">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                <path
+                  d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+              </svg>
+              <span id="mic-status-text">Enable Microphone</span>
+            </button>
+          </div>
+
+          <!-- Celebration message when all candles are blown -->
+          <div id="cake-celebration-msg" class="celebration-message" role="status">
+            ✨ "May all the beautiful things you wish for find their way to you." ✨
+          </div>
+        </div>
+
+        <!-- =============================================================
+             THE ETERNAL BLOOM (3D REALISTIC INTERACTIVE FLOWER)
+             ============================================================= -->
+        <div class="eternal-flower-stage reveal-on-scroll" id="eternal-flower-stage">
+          <div class="flower-header">
+            <span class="flower-tagline">A Gift Picked From the Stars</span>
+            <h3 class="flower-title">The Eternal Bloom</h3>
+            <p class="flower-subtitle">
+              Earthly flowers fade with time... but in your little universe, this flower will bloom forever.
+            </p>
+          </div>
+
+          <div class="flower-3d-scene" id="flower-3d-scene" role="button" tabindex="0"
+            aria-label="Tap to bloom the flower">
+            <!-- 3D Flower Stem & Leaves -->
+            <div class="flower-stem-wrapper" aria-hidden="true">
+              <div class="flower-stem"></div>
+              <div class="flower-leaf leaf-left"></div>
+              <div class="flower-leaf leaf-right"></div>
+            </div>
+
+            <!-- Concentric 3D Petal Layers -->
+            <div class="flower-bud" id="flower-bud" aria-hidden="true">
+              <!-- Radiant Stamen Core -->
+              <div class="flower-core-glow">
+                <div class="stamen-light"></div>
+                <div class="stamen-particles">
+                  <span>✦</span><span>✧</span><span>✦</span>
+                </div>
+              </div>
+
+              <!-- Inner Layer (Tight Petals) -->
+              <div class="petal-layer layer-inner">
+                <div class="petal p-in-1"></div>
+                <div class="petal p-in-2"></div>
+                <div class="petal p-in-3"></div>
+                <div class="petal p-in-4"></div>
+                <div class="petal p-in-5"></div>
+              </div>
+
+              <!-- Middle Layer (Overlapping Petals) -->
+              <div class="petal-layer layer-mid">
+                <div class="petal p-mid-1"></div>
+                <div class="petal p-mid-2"></div>
+                <div class="petal p-mid-3"></div>
+                <div class="petal p-mid-4"></div>
+                <div class="petal p-mid-5"></div>
+                <div class="petal p-mid-6"></div>
+              </div>
+
+              <!-- Outer Layer (Full Velvet Petals) -->
+              <div class="petal-layer layer-outer">
+                <div class="petal p-out-1"></div>
+                <div class="petal p-out-2"></div>
+                <div class="petal p-out-3"></div>
+                <div class="petal p-out-4"></div>
+                <div class="petal p-out-5"></div>
+                <div class="petal p-out-6"></div>
+                <div class="petal p-out-7"></div>
+                <div class="petal p-out-8"></div>
+              </div>
+            </div>
+
+            <!-- Interactive Pulse Prompt -->
+            <div class="flower-bloom-hint" id="flower-bloom-hint">
+              <span>✨ Tap to Bloom Your Flower ✨</span>
+            </div>
+          </div>
+
+          <!-- Emotional Reveal Card -->
+          <div class="flower-reveal-card glass-card" id="flower-reveal-card">
+            <p class="flower-poem">
+              "Real flowers fade with time... but in this universe created for you, this flower will bloom forever."
+            </p>
+            <span class="flower-signature">HAPPY BIRTHDAY, FAMI ❤️<br><span
+                style="font-size: 0.9em; opacity: 0.85; font-weight: 400; font-family: var(--font-handwritten); letter-spacing: 0.05em; margin-top: 0.3rem; display: inline-block;">—
+                Forever Yours, Rahim</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION 07: A VOICE FROM MY HEART
+           ============================================================= -->
+      <section id="section-voice" class="experience-section" aria-label="A Voice From My Heart">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Personal Voice Message</p>
+          <h2 class="section-title">A Voice From My Heart</h2>
+          <p class="section-description">When written words aren't enough, listen to the whisper spoken directly from my
+            heart to yours.</p>
+        </header>
+
+        <div class="voice-card-layout reveal-on-scroll">
+          <!-- Custom Audio Player -->
+          <div class="audio-player-box glass-card">
+            <div class="player-main-row">
+              <button id="voice-play-btn" class="play-pause-btn" type="button" aria-label="Play voice recording">
+                <!-- Play Icon -->
+                <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <!-- Pause Icon -->
+                <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </button>
+
+              <div class="player-scrubber-col">
+                <div id="voice-progress-track" class="scrubber-track" role="progressbar" aria-valuemin="0"
+                  aria-valuemax="100" aria-valuenow="0">
+                  <div id="voice-progress-fill" class="scrubber-fill"></div>
+                </div>
+                <div class="scrubber-timestamps">
+                  <span id="voice-current-time">0:00</span>
+                  <span id="voice-total-time">Voice Message</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Waveform Animation -->
+            <div id="voice-waveform" class="waveform-container" aria-hidden="true"></div>
+          </div>
+
+          <!-- Handwritten-Style Letter Card -->
+          <div class="handwritten-card glass-card">
+            <div id="voice-letter-content" class="handwritten-content">
+              <!-- Populated from FAMI_CONFIG.voiceSection.letterText -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION 08: OUR UNWRITTEN CHAPTERS
+           ============================================================= -->
+      <section id="section-future" class="experience-section" aria-label="Our Unwritten Chapters">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Tomorrow's Dreams</p>
+          <h2 class="section-title">
+            Our Unwritten Chapters
+            <span class="hidden-symbol" data-treasure-id="moon" title="The glowing moon" role="button" tabindex="0"
+              aria-label="Find moon secret" style="font-size: 1.2rem; margin-left: 0.4rem;">🌙</span>
+          </h2>
+          <p class="section-description">"Our story isn't finished. The most beautiful chapters are still waiting to be
+            written."</p>
+        </header>
+
+        <div id="future-grid" class="future-grid">
+          <!-- Dynamically populated 4 cards from FAMI_CONFIG.futureChapters -->
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION 10: THE FINAL SURPRISE (EMOTIONAL CLIMAX)
+           ============================================================= -->
+      <section id="section-final" class="experience-section" aria-label="The Final Surprise">
+        <!-- Glowing Heart Icon -->
+        <div class="final-heart-glow" aria-hidden="true">
+          <svg class="final-heart-svg" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </div>
+
+        <h1 class="final-birthday-heading">HAPPY BIRTHDAY, FAMI! ❤️</h1>
+
+        <div class="final-letter-card glass-card reveal-on-scroll">
+          <div id="final-letter-content" class="final-letter-body">
+            <!-- Populated from FAMI_CONFIG.finalSurprise.letter -->
+          </div>
+        </div>
+
+        <div class="replay-btn-wrapper">
+          <button id="replay-universe-btn" class="btn-primary" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M2.5 2v6h6M21.5 22v-6h-6" />
+              <path d="M22 11.5A10 10 0 0 0 3.2 7.2L2.5 8M2 12.5a10 10 0 0 0 18.8 4.3l.7-.8" />
+            </svg>
+            <span>Replay Our Little Universe</span>
+          </button>
+        </div>
+
+        <footer class="site-footer">
+          <p>Created with boundless love exclusively for Fami by Rahim • November 23, 2026</p>
+        </footer>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- ===============================================================
+       FULLSCREEN PHOTO MODAL (FOR TIMELINE CHAPTERS)
+       =============================================================== -->
+  <div id="photo-modal" class="photo-modal-backdrop" role="dialog" aria-modal="true" aria-label="Fullscreen Photo View">
+    <div class="photo-modal-container">
+      <button id="modal-close-btn" class="modal-close-btn" type="button" aria-label="Close modal">✕</button>
+      <div class="modal-img-wrapper">
+        <img id="modal-photo-img" src="" alt="Fullscreen view" />
+      </div>
+      <div class="modal-info-panel">
+        <div id="modal-photo-date" class="modal-info-date"></div>
+        <p id="modal-photo-caption" class="modal-info-caption"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       SECRET TREASURES MODAL (FOR HIDDEN SYMBOLS)
+       =============================================================== -->
+  <div id="secret-modal" class="secret-modal-backdrop" role="dialog" aria-modal="true" aria-label="Secret Discovered">
+    <div class="secret-modal-card glass-card">
+      <div id="secret-modal-icon" class="secret-modal-icon" aria-hidden="true">✨</div>
+      <h3 id="secret-modal-title" class="secret-modal-title">Secret Discovered</h3>
+      <div id="secret-modal-text" class="secret-modal-text"></div>
+      <button id="secret-modal-close" class="btn-primary" type="button">Keep Exploring</button>
+    </div>
+  </div>
+
+  <!-- Scripts in dependency order -->
+  <script src="js/data.js"></script>
+  <script src="js/universe.js"></script>
+  <script src="js/memories.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/interactions.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>

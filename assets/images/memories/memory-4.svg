@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B1226" />
+      <stop offset="50%" stop-color="#342045" />
+      <stop offset="100%" stop-color="#241B35" />
+    </linearGradient>
+    <radialGradient id="glow4" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#D9A6B5" stop-opacity="0.3" />
+      <stop offset="50%" stop-color="#D9B8E4" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#1B1226" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g4)" />
+  <circle cx="400" cy="270" r="180" fill="url(#glow4)" />
+  <circle cx="400" cy="250" r="65" fill="none" stroke="#F4CADB" stroke-width="1.5" opacity="0.6" />
+  <text x="400" y="260" font-size="32" text-anchor="middle" fill="#FFF9FC">💫</text>
+  <text x="400" y="370" font-family="'Cormorant Garamond', Georgia, serif" font-size="30" fill="#FFF9FC" font-weight="600" text-anchor="middle" letter-spacing="2">
+    Chapter 04: The Unforgettable Moments
+  </text>
+  <text x="400" y="410" font-family="'Inter', sans-serif" font-size="14" fill="#D9B8E4" text-anchor="middle" letter-spacing="3" opacity="0.85">
+    TIMELESS DAYS • REPLACE WITH YOUR PHOTO
+  </text>
+</svg>

@@ -1,0 +1,352 @@
+/* ===================================================================
+   A UNIVERSE MADE FOR FAMI ❤️
+   Responsive Stylesheet & Mobile Viewport Rules
+   =================================================================== */
+
+/* Safe area padding helper for modern mobile devices */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Ensure no element ever causes horizontal scroll */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* ===================================================================
+   MOBILE BASE (< 768px)
+   =================================================================== */
+@media screen and (max-width: 767px) {
+  .experience-section {
+    padding: 4.5rem 1.25rem;
+    min-height: auto;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .password-card {
+    padding: 2rem 1.25rem;
+    max-width: 92vw;
+  }
+
+  .lock-symbol-wrapper {
+    width: 68px;
+    height: 68px;
+    margin-bottom: 1.2rem;
+  }
+
+  .password-card h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Royal Envelope & Unfolding Parchment Mobile */
+  .royal-envelope {
+    width: 295px !important;
+    height: 195px !important;
+  }
+
+  .unfolding-letter {
+    padding: 1.25rem 1rem !important;
+  }
+
+  .parchment-salutation {
+    font-size: 1.55rem !important;
+    gap: 0.3rem !important;
+  }
+
+  .salutation-text {
+    font-size: 1.65rem !important;
+  }
+
+  .salutation-heart {
+    font-size: 1.15rem !important;
+  }
+
+  .salutation-sparkle {
+    font-size: 0.85rem !important;
+  }
+
+  .parchment-message {
+    font-size: 1.05rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .parchment-sub {
+    font-size: 0.78rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .parchment-signature {
+    margin-bottom: 1.1rem !important;
+  }
+
+  .sig-author {
+    font-size: 1.65rem !important;
+  }
+
+  .parchment-btn {
+    padding: 0.8rem 1.6rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .royal-envelope.opened .unfolding-letter {
+    transform: translate(-50%, -50%) scale(1) !important;
+    width: 88vw !important;
+    max-width: 360px !important;
+    min-height: auto !important;
+    padding: 1.8rem 1.4rem !important;
+  }
+
+  .wax-seal {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .wax-seal-ring {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .wax-seal-inner {
+    font-size: 1.45rem !important;
+  }
+
+  /* Interactive Elements Touch Target Rules */
+  button, 
+  .control-btn, 
+  .btn-primary, 
+  .interactive-card, 
+  .hidden-symbol,
+  .candle-wrapper {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Memory Timeline Mobile */
+  .timeline-container {
+    padding-left: 1.5rem !important;
+  }
+
+  .timeline-line {
+    left: 8px !important;
+  }
+
+  .timeline-node {
+    left: 8px !important;
+  }
+
+  .timeline-card {
+    width: 100% !important;
+    margin-left: 1.25rem !important;
+  }
+
+  /* 23 Cards Grid Mobile */
+  .reasons-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    gap: 0.85rem !important;
+  }
+
+  .reason-card {
+    height: 190px !important;
+  }
+
+  /* Future Chapters Mobile */
+  .future-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.2rem !important;
+  }
+
+  /* 3D Orbit Gallery Mobile */
+  .orbit-gallery-viewport {
+    min-height: 380px !important;
+  }
+
+  .orbit-scene {
+    height: 270px !important;
+  }
+
+  .orbit-carousel {
+    width: 125px !important;
+    height: 175px !important;
+  }
+
+  .orbit-card-title {
+    font-size: 0.72rem !important;
+  }
+
+  .orbit-controls {
+    margin-top: 1.2rem !important;
+    gap: 0.6rem !important;
+  }
+
+  .orbit-action-btn {
+    font-size: 0.75rem !important;
+    padding: 0.4rem 0.85rem !important;
+  }
+
+  /* Luxury Cake Mobile */
+  .cake-container {
+    width: 270px !important;
+    height: 270px !important;
+  }
+
+  .cake-tier-top {
+    width: 150px !important;
+    height: 70px !important;
+  }
+
+  .cake-tier-bottom {
+    width: 220px !important;
+    height: 85px !important;
+  }
+
+  .cake-stand {
+    width: 260px !important;
+  }
+
+  /* 3D Eternal Bloom Flower Mobile */
+  .eternal-flower-stage {
+    padding: 2rem 1rem !important;
+    margin-top: 3.5rem !important;
+  }
+
+  .flower-title {
+    font-size: 1.85rem !important;
+  }
+
+  .flower-3d-scene {
+    width: 240px !important;
+    height: 280px !important;
+  }
+
+  .flower-bud {
+    top: 35px !important;
+  }
+
+  /* Floating controls mobile repositioning */
+  .floating-controls {
+    top: calc(0.75rem + var(--safe-top));
+    right: calc(0.75rem + var(--safe-right));
+  }
+
+  .secrets-tracker-pill {
+    top: calc(0.75rem + var(--safe-top));
+    left: calc(0.75rem + var(--safe-left));
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .constellation-meter {
+    bottom: calc(0.75rem + var(--safe-bottom));
+    right: calc(0.75rem + var(--safe-right));
+    font-size: 0.7rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+
+/* ===================================================================
+   SMALL SCREENS (<= 360px: e.g. Galaxy Fold, older compacts)
+   =================================================================== */
+@media screen and (max-width: 360px) {
+  .password-card h1 {
+    font-size: 1.55rem;
+  }
+
+  .royal-envelope {
+    width: 255px !important;
+    height: 175px !important;
+  }
+
+  .royal-envelope.opened .unfolding-letter {
+    transform: translate(-50%, -50%) scale(0.96) !important;
+    width: 92vw !important;
+    padding: 1.4rem 1.1rem !important;
+  }
+
+  .wax-seal {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .wax-seal-inner {
+    font-size: 1.25rem !important;
+  }
+
+  .parchment-salutation {
+    gap: 0.2rem !important;
+  }
+
+  .salutation-text {
+    font-size: 1.35rem !important;
+  }
+
+  .salutation-heart {
+    font-size: 0.95rem !important;
+  }
+
+  .salutation-sparkle {
+    font-size: 0.75rem !important;
+  }
+
+  .parchment-message {
+    font-size: 0.95rem !important;
+  }
+
+  .section-title {
+    font-size: 1.85rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .orbit-carousel {
+    width: 105px !important;
+    height: 150px !important;
+  }
+}
+
+/* ===================================================================
+   TABLET (768px to 1024px)
+   =================================================================== */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .experience-section {
+    padding: 5rem 2rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1.2rem !important;
+  }
+
+  .future-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===================================================================
+   DESKTOP (> 1024px)
+   =================================================================== */
+@media screen and (min-width: 1025px) {
+  .experience-section {
+    padding: 7rem 2rem;
+  }
+
+  .reasons-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.4rem !important;
+  }
+
+  .future-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+}

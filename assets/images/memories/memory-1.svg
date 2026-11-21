@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#241B35" />
+      <stop offset="60%" stop-color="#3A2856" />
+      <stop offset="100%" stop-color="#1A1227" />
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#F4CADB" stop-opacity="0.3" />
+      <stop offset="50%" stop-color="#D9B8E4" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#241B35" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g1)" />
+  <circle cx="400" cy="270" r="180" fill="url(#glow1)" />
+  <circle cx="400" cy="250" r="65" fill="none" stroke="#F6E9D2" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.6" />
+  <circle cx="400" cy="250" r="48" fill="#F4CADB" opacity="0.15" />
+  <!-- Sparkles & Celestial Icons -->
+  <text x="400" y="260" font-size="32" text-anchor="middle" fill="#FFF9FC">✨</text>
+  <text x="400" y="370" font-family="'Cormorant Garamond', Georgia, serif" font-size="30" fill="#FFF9FC" font-weight="600" text-anchor="middle" letter-spacing="2">
+    Chapter 01: The Beginning
+  </text>
+  <text x="400" y="410" font-family="'Inter', sans-serif" font-size="14" fill="#D9B8E4" text-anchor="middle" letter-spacing="3" opacity="0.85">
+    AUGUST 14, 2019 • REPLACE WITH YOUR PHOTO
+  </text>
+</svg>
