@@ -313,3 +313,90 @@
     transform: translate(-50%, -50%) scale(1.08);
   }
 }
+
+/* ===================================================================
+   NEW ANIMATIONS: FAIRY DUST, 3D GIFT BOX & SCRATCH CARD
+   =================================================================== */
+
+/* Fairy Dust Magic Wand Particle */
+@keyframes fairy-dust-float {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) translateY(-32px) rotate(20deg);
+  }
+}
+
+.fairy-dust-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  user-select: none;
+  animation: fairy-dust-float 0.85s ease-out forwards;
+}
+
+/* Gift Box Idle Levitation & Pulse */
+@keyframes gift-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 25px rgba(217, 184, 228, 0.35));
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+    filter: drop-shadow(0 22px 45px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 40px rgba(244, 202, 219, 0.65));
+  }
+}
+
+/* Gift Bow Pulse */
+@keyframes bow-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 14px rgba(244, 202, 219, 0.8));
+  }
+}
+
+/* Coupon Pop In Animation */
+@keyframes coupon-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(35px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Coupon Claim Stamp Animation */
+@keyframes stamp-slam {
+  0% {
+    transform: scale(3.5) rotate(-25deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(0.92) rotate(-8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-8deg);
+    opacity: 1;
+  }
+}
+
+/* Counter Box Subtle Glow */
+@keyframes counter-glow-pulse {
+  0%, 100% {
+    border-color: rgba(217, 184, 228, 0.35);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), inset 0 0 15px rgba(217, 184, 228, 0.1);
+  }
+  50% {
+    border-color: rgba(244, 202, 219, 0.75);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(244, 202, 219, 0.45), inset 0 0 25px rgba(244, 202, 219, 0.25);
+  }
+}

@@ -250,6 +250,62 @@ html, body {
     font-size: 0.7rem;
     padding: 0.4rem 0.75rem;
   }
+
+  /* Time Together Counter Mobile */
+  .counter-display-wrapper {
+    padding: 1.8rem 1rem !important;
+  }
+
+  .counter-grid {
+    gap: 0.4rem !important;
+  }
+
+  .counter-box {
+    min-width: 68px !important;
+    padding: 0.75rem 0.5rem !important;
+    border-radius: 10px !important;
+  }
+
+  .counter-number {
+    font-size: 1.75rem !important;
+  }
+
+  .counter-label {
+    font-size: 0.7rem !important;
+  }
+
+  .counter-divider {
+    font-size: 1.35rem !important;
+  }
+
+  .counter-love-quote {
+    font-size: 0.95rem !important;
+  }
+
+  /* 3D Gift Box & Coupons Mobile */
+  .gift-box-3d-container {
+    width: 190px !important;
+    height: 175px !important;
+  }
+
+  .coupons-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Golden Scratch Card Mobile */
+  .scratch-card-container {
+    height: 420px !important;
+  }
+
+  .scratch-underlayer {
+    padding: 1.5rem 1.1rem !important;
+  }
+
+  .scratch-secret-text {
+    font-size: 0.98rem !important;
+    line-height: 1.5 !important;
+  }
 }
 
 /* ===================================================================

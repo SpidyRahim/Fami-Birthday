@@ -24,14 +24,18 @@ class InteractionsManager {
   }
 
   init() {
+    this.setupFairyDustTrail();
     this.setupPasswordGate();
     this.setupEnvelope();
+    this.setupJourneyCounter();
     this.setupAmbientAudio();
     this.setupReasonsGrid();
     this.setupBirthdayCake();
     this.setupEternalFlower();
+    this.setupGiftBox();
     this.setupVoicePlayer();
     this.setupFutureChapters();
+    this.setupScratchCard();
     this.setupHiddenTreasures();
     this.setupFinalSurprise();
     this.setupGeneralScrollObserver();
@@ -918,5 +922,348 @@ class InteractionsManager {
     document.querySelectorAll('.reveal-on-scroll').forEach(el => {
       observer.observe(el);
     });
+  }
+
+  // =================================================================
+  // FEATURE 1: FAIRY DUST MAGIC WAND (GLOBAL TOUCH/POINTER TRAIL)
+  // =================================================================
+  setupFairyDustTrail() {
+    let lastTime = 0;
+    const dustIcons = ['💖', '✨', '🌸', '💕', '✦', '✧', '💗'];
+    
+    const spawnParticle = (x, y) => {
+      const now = Date.now();
+      if (now - lastTime < 45) return; // throttle 45ms for smooth performance
+      lastTime = now;
+
+      const p = document.createElement('span');
+      p.className = 'fairy-dust-particle';
+      p.textContent = dustIcons[Math.floor(Math.random() * dustIcons.length)];
+      p.style.left = `${x}px`;
+      p.style.top = `${y}px`;
+      p.style.fontSize = `${Math.random() * 0.7 + 0.75}rem`;
+      p.style.color = ['#F4CADB', '#D9B8E4', '#F6E9D2', '#FFF9FC', '#ff758c', '#ffd166'][Math.floor(Math.random() * 6)];
+      p.style.filter = 'drop-shadow(0 0 6px rgba(244, 202, 219, 0.8))';
+      document.body.appendChild(p);
+
+      setTimeout(() => {
+        p.remove();
+      }, 850);
+    };
+
+    window.addEventListener('pointermove', (e) => {
+      spawnParticle(e.clientX, e.clientY);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches[0]) {
+        spawnParticle(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+  }
+
+  // =================================================================
+  // FEATURE 2: THE JOURNEY OF US (LIVE TIME TOGETHER COUNTER)
+  // =================================================================
+  setupJourneyCounter() {
+    const daysEl = document.getElementById('counter-days');
+    const hoursEl = document.getElementById('counter-hours');
+    const minEl = document.getElementById('counter-minutes');
+    const secEl = document.getElementById('counter-seconds');
+    const milestoneEl = document.getElementById('counter-milestone-text');
+
+    if (!daysEl || !hoursEl || !minEl || !secEl) return;
+
+    const startDate = new Date(FAMI_CONFIG.journeyCounter?.startDate || "2019-08-14T00:00:00").getTime();
+
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const diff = Math.max(0, now - startDate);
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      daysEl.textContent = days.toLocaleString();
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minEl.textContent = String(minutes).padStart(2, '0');
+      secEl.textContent = String(seconds).padStart(2, '0');
+
+      if (milestoneEl) {
+        const totalHours = Math.floor(diff / (1000 * 60 * 60)).toLocaleString();
+        milestoneEl.innerHTML = `Over <strong>${days.toLocaleString()}</strong> days & <strong>${totalHours}</strong> hours of smiles, late night talks, and warm memories.`;
+      }
+    };
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  // =================================================================
+  // FEATURE 3: VIRTUAL 3D GIFT BOX & LOVE COUPONS
+  // =================================================================
+  setupGiftBox() {
+    const giftBox = document.getElementById('gift-box-container');
+    const giftHint = document.getElementById('gift-tap-hint');
+    const showcase = document.getElementById('coupons-showcase');
+    const couponsGrid = document.getElementById('coupons-grid');
+
+    if (!giftBox || !couponsGrid) return;
+
+    let isOpened = false;
+
+    // Populate coupons from config
+    const coupons = FAMI_CONFIG.giftBox?.coupons || [];
+    couponsGrid.innerHTML = coupons.map((c, i) => `
+      <div class="coupon-card" style="animation-delay: ${i * 0.12}s;">
+        <span class="coupon-badge">${c.badge}</span>
+        <div class="coupon-icon">${c.icon}</div>
+        <div>
+          <h3 class="coupon-title">${c.title}</h3>
+          <p class="coupon-desc">${c.desc}</p>
+        </div>
+        <button type="button" class="coupon-claim-btn" data-coupon-id="${c.id}">
+          Claim This Coupon ✨
+        </button>
+      </div>
+    `).join('');
+
+    // Handle coupon claims
+    couponsGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.coupon-claim-btn');
+      if (!btn) return;
+
+      const card = btn.closest('.coupon-card');
+      if (!card || card.querySelector('.coupon-stamp')) return;
+
+      btn.style.display = 'none';
+      const stamp = document.createElement('div');
+      stamp.className = 'coupon-stamp';
+      stamp.innerHTML = 'CLAIMED ❤️';
+      card.appendChild(stamp);
+
+      // Spawn stardust
+      for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'celebration-sparkle';
+          sparkle.textContent = ['💖', '✨', '🌸', '💕'][Math.floor(Math.random() * 4)];
+          sparkle.style.left = `${Math.random() * 80 + 10}%`;
+          sparkle.style.top = `${Math.random() * 60 + 20}%`;
+          card.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 1200);
+        }, i * 30);
+      }
+
+      if (window.Universe) {
+        window.Universe.illuminateStar('Love Coupon Claimed');
+      }
+    });
+
+    const openGift = () => {
+      if (isOpened) return;
+      isOpened = true;
+      giftBox.classList.add('opened');
+
+      if (giftHint) {
+        giftHint.textContent = '🎉 Your Gift is Unwrapped! Look at your exclusive coupons below! 🎉';
+        giftHint.style.color = '#ffd166';
+      }
+
+      // Explosion of celebration sparkles from the box
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'celebration-sparkle';
+          sparkle.textContent = ['🎉', '💖', '✨', '🌸', '🎁', '💕', '🌟'][Math.floor(Math.random() * 7)];
+          sparkle.style.left = `${Math.random() * 80 + 10}%`;
+          sparkle.style.top = `${Math.random() * 60 + 20}%`;
+          sparkle.style.fontSize = `${Math.random() * 1.2 + 0.9}rem`;
+          giftBox.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 1600);
+        }, i * 35);
+      }
+
+      if (window.Universe) {
+        window.Universe.illuminateStar('Birthday Gift Unwrapped');
+        window.Universe.spawnShootingStar();
+      }
+
+      setTimeout(() => {
+        if (showcase) {
+          showcase.classList.add('visible');
+          showcase.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 700);
+    };
+
+    giftBox.addEventListener('click', openGift);
+    giftBox.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openGift();
+      }
+    });
+  }
+
+  // =================================================================
+  // FEATURE 4: GOLDEN SCRATCH CARD SECRET
+  // =================================================================
+  setupScratchCard() {
+    const canvas = document.getElementById('scratch-canvas');
+    const container = document.getElementById('scratch-container');
+    const statusText = document.getElementById('scratch-status-text');
+    const revealBtn = document.getElementById('scratch-reveal-all-btn');
+
+    if (!canvas || !container) return;
+
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    let isDrawing = false;
+    let isRevealed = false;
+    let width = 0;
+    let height = 0;
+
+    const resize = () => {
+      width = container.offsetWidth || 400;
+      height = container.offsetHeight || 380;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+      drawFoil();
+    };
+
+    const drawFoil = () => {
+      // Golden Foil Gradient
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, '#c59b27');
+      grad.addColorStop(0.25, '#f4d068');
+      grad.addColorStop(0.5, '#e5b83b');
+      grad.addColorStop(0.75, '#fff1a8');
+      grad.addColorStop(1, '#b8860b');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Golden Stardust Specks
+      for (let i = 0; i < 350; i++) {
+        ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.65)' : 'rgba(160, 100, 15, 0.45)';
+        ctx.beginPath();
+        ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Border inside foil
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(12, 12, width - 24, height - 24);
+
+      // Center Prompt Text
+      ctx.fillStyle = '#4a2d04';
+      ctx.font = 'bold 16px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('✨ Scratch Here With Love ✨', width / 2, height / 2 - 12);
+
+      ctx.fillStyle = '#6e450b';
+      ctx.font = 'italic 13px Inter, sans-serif';
+      ctx.fillText('(Use finger or mouse)', width / 2, height / 2 + 14);
+    };
+
+    // Defer resize until DOM is laid out
+    setTimeout(resize, 200);
+    window.addEventListener('resize', () => {
+      if (!isRevealed) resize();
+    });
+
+    const scratch = (clientX, clientY) => {
+      if (isRevealed) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 28, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Check progress every few scratches
+      checkProgress();
+    };
+
+    let checkThrottle = 0;
+    const checkProgress = () => {
+      checkThrottle++;
+      if (checkThrottle % 15 !== 0) return;
+
+      try {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const imgData = ctx.getImageData(0, 0, width * dpr, height * dpr);
+        const data = imgData.data;
+        let clearPixels = 0;
+        const totalSampled = Math.floor(data.length / 32);
+
+        for (let i = 3; i < data.length; i += 32) { // sample every 8th pixel
+          if (data[i] === 0) clearPixels++;
+        }
+
+        const percent = Math.min(100, Math.round((clearPixels / totalSampled) * 100));
+        if (statusText) {
+          statusText.textContent = `Secret Revealed: ${percent}%`;
+        }
+
+        if (percent > 42) {
+          revealEntireSecret();
+        }
+      } catch (err) {
+        // Cross-origin fallback safety
+      }
+    };
+
+    const revealEntireSecret = () => {
+      if (isRevealed) return;
+      isRevealed = true;
+      canvas.style.opacity = '0';
+      canvas.style.pointerEvents = 'none';
+
+      if (statusText) {
+        statusText.textContent = '✨ Secret Unlocked with Love ✨';
+        statusText.style.color = '#ffd166';
+      }
+      if (revealBtn) {
+        revealBtn.style.display = 'none';
+      }
+
+      if (window.Universe) {
+        window.Universe.illuminateStar('Golden Scratch Secret Revealed');
+        window.Universe.spawnShootingStar();
+      }
+    };
+
+    // Mouse Events
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      scratch(e.clientX, e.clientY);
+    });
+    window.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDrawing) scratch(e.clientX, e.clientY);
+    });
+
+    // Touch Events
+    canvas.addEventListener('touchstart', (e) => {
+      isDrawing = true;
+      if (e.touches[0]) scratch(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    window.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('touchmove', (e) => {
+      if (isDrawing && e.touches[0]) scratch(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+
+    if (revealBtn) {
+      revealBtn.addEventListener('click', revealEntireSecret);
+    }
   }
 }

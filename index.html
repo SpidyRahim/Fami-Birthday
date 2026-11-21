@@ -230,6 +230,58 @@
       </section>
 
       <!-- =============================================================
+           SECTION: THE JOURNEY OF US (LIVE TIME TOGETHER COUNTER)
+           ============================================================= -->
+      <section id="section-counter" class="experience-section" aria-label="The Journey of Us">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">Our Infinite Journey</p>
+          <h2 class="section-title">The Journey of Us ⏳</h2>
+          <p class="section-description">"From August 14, 2019 to this very second... every heartbeat has belonged to you."</p>
+        </header>
+
+        <div class="counter-container reveal-on-scroll">
+          <div class="counter-display-wrapper glass-card">
+            <div class="counter-clock-icon" aria-hidden="true">💫</div>
+            
+            <div class="counter-grid">
+              <div class="counter-box">
+                <span class="counter-number" id="counter-days">0</span>
+                <span class="counter-label">Days</span>
+              </div>
+              <div class="counter-divider">:</div>
+              <div class="counter-box">
+                <span class="counter-number" id="counter-hours">00</span>
+                <span class="counter-label">Hours</span>
+              </div>
+              <div class="counter-divider">:</div>
+              <div class="counter-box">
+                <span class="counter-number" id="counter-minutes">00</span>
+                <span class="counter-label">Minutes</span>
+              </div>
+              <div class="counter-divider">:</div>
+              <div class="counter-box highlight">
+                <span class="counter-number" id="counter-seconds">00</span>
+                <span class="counter-label">Seconds</span>
+              </div>
+            </div>
+
+            <div class="counter-poetic-bar">
+              <span class="counter-sparkle-dot">✦</span>
+              <p class="counter-milestone-text" id="counter-milestone-text">
+                Calculating our journey across the cosmos...
+              </p>
+              <span class="counter-sparkle-dot">✦</span>
+            </div>
+
+            <p class="counter-love-quote">
+              "Time is measured in moments, and with you, every single second feels like eternity in the stars."
+              <span class="counter-author">— Rahim ❤️</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
            SECTION 04: OUR STORY, OUR LITTLE WORLD (TIMELINE)
            ============================================================= -->
       <section id="section-story" class="experience-section" aria-label="Our Story, Our Little World">
@@ -512,6 +564,60 @@
       </section>
 
       <!-- =============================================================
+           SECTION: VIRTUAL 3D GIFT BOX & LOVE COUPONS
+           ============================================================= -->
+      <section id="section-gift" class="experience-section" aria-label="Your Birthday Gift Box">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">A Birthday Gift For You</p>
+          <h2 class="section-title">Open Your Birthday Gift 🎁</h2>
+          <p class="section-description">A physical gift might be waiting in real life, but here in our universe, I have special promises for you.</p>
+        </header>
+
+        <div class="gift-box-section-wrapper reveal-on-scroll">
+          <!-- 3D Luxury Gift Box -->
+          <div class="gift-box-3d-container" id="gift-box-container" tabindex="0" role="button" aria-label="Tap to untie ribbon and open your gift box">
+            <!-- Floating Sparkle Halos -->
+            <div class="gift-glow-halo" aria-hidden="true"></div>
+
+            <!-- The Box Lid -->
+            <div class="gift-lid" id="gift-lid">
+              <div class="lid-ribbon-cross horizontal"></div>
+              <div class="lid-ribbon-cross vertical"></div>
+              <!-- Luxury Satin Bow -->
+              <div class="lid-bow" id="lid-bow">
+                <span class="bow-loop left"></span>
+                <span class="bow-loop right"></span>
+                <span class="bow-center"></span>
+                <span class="bow-tail left"></span>
+                <span class="bow-tail right"></span>
+              </div>
+            </div>
+
+            <!-- The Box Base Body -->
+            <div class="gift-body" id="gift-body">
+              <div class="body-ribbon horizontal"></div>
+              <div class="body-ribbon vertical"></div>
+              <div class="gift-interior-glow" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <p class="gift-tap-hint" id="gift-tap-hint">✨ Tap the satin bow to unwrap your gift ✨</p>
+
+          <!-- Revealed Love Coupons Drawer / Showcase -->
+          <div class="coupons-showcase" id="coupons-showcase" aria-hidden="true">
+            <div class="coupons-header">
+              <span class="coupons-celebration-title">🎉 Rahim's Exclusive Love Coupons 🎉</span>
+              <p class="coupons-subtitle">Handcrafted with pure love. Non-expiring & redeemable anytime with a single smile.</p>
+            </div>
+
+            <div class="coupons-grid" id="coupons-grid">
+              <!-- Dynamically populated from FAMI_CONFIG.giftBox.coupons in js/interactions.js -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
            SECTION 07: A VOICE FROM MY HEART
            ============================================================= -->
       <section id="section-voice" class="experience-section" aria-label="A Voice From My Heart">
@@ -579,6 +685,46 @@
 
         <div id="future-grid" class="future-grid">
           <!-- Dynamically populated 4 cards from FAMI_CONFIG.futureChapters -->
+        </div>
+      </section>
+
+      <!-- =============================================================
+           SECTION: GOLDEN SCRATCH CARD SECRET
+           ============================================================= -->
+      <section id="section-scratch" class="experience-section" aria-label="Golden Scratch Secret">
+        <header class="section-header reveal-on-scroll">
+          <p class="section-tagline">A Hidden Promise</p>
+          <h2 class="section-title">The Secret Under The Gold 🪙</h2>
+          <p class="section-description">Some words are too special to leave out in the open. Scratch off the golden stardust to reveal what I wrote for you...</p>
+        </header>
+
+        <div class="scratch-card-wrapper reveal-on-scroll">
+          <div class="scratch-card-container" id="scratch-container">
+            <!-- Hidden Secret Message Underneath -->
+            <div class="scratch-underlayer" id="scratch-underlayer">
+              <div class="scratch-secret-border"></div>
+              <div class="scratch-secret-badge">A Heartfelt Whisper ❤️</div>
+              <p class="scratch-secret-text">
+                "My dearest Fami,<br><br>
+                If I had to live a thousand lifetimes across a thousand galaxies, I would search the stars until I found you in every single one.<br><br>
+                You are my today, my tomorrow, and my forever home.<br><br>
+                Happy Birthday, my queen."
+              </p>
+              <div class="scratch-signature">
+                <span>— Forever Yours,</span>
+                <strong>Rahim ❤️</strong>
+              </div>
+            </div>
+
+            <!-- Golden Glitter Foil Canvas On Top -->
+            <canvas id="scratch-canvas" class="scratch-canvas"></canvas>
+          </div>
+
+          <div class="scratch-status-bar">
+            <span class="scratch-hint-icon">✨</span>
+            <span id="scratch-status-text">Scratch with your finger or mouse to reveal</span>
+            <button id="scratch-reveal-all-btn" class="scratch-reveal-btn" type="button">Reveal Secret</button>
+          </div>
         </div>
       </section>
 

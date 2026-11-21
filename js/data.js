@@ -205,6 +205,67 @@ Rahim`
     }
   ],
 
+  // Section: Time Together Counter
+  journeyCounter: {
+    startDate: "2019-08-14T00:00:00",
+    tagline: "Our Infinite Journey",
+    title: "The Journey of Us",
+    description: "From August 14, 2019 to this very second... every heartbeat has belonged to you.",
+    quote: "Time is measured in moments, and with you, every single second feels like eternity in the stars."
+  },
+
+  // Section: Virtual 3D Gift Box & Love Coupons
+  giftBox: {
+    tagline: "A Birthday Gift For You",
+    title: "Make a Wish, Then Open Your Gift 🎁",
+    description: "A physical gift might be waiting in real life, but here in our universe, I have special promises for you.",
+    coupons: [
+      {
+        id: "coupon-1",
+        icon: "🍦",
+        title: "Midnight Ice Cream & Drive",
+        desc: "Redeemable anytime, no matter how late. Your favorite ice cream flavor and quiet empty roads guaranteed.",
+        badge: "Valid 24/7"
+      },
+      {
+        id: "coupon-2",
+        icon: "🫂",
+        title: "The Infinite Warm Hug",
+        desc: "Valid whenever you feel tired, cold, or just want to melt in my arms. Non-expiring and zero questions asked.",
+        badge: "Infinite Hugs"
+      },
+      {
+        id: "coupon-3",
+        icon: "🎬",
+        title: "Queen's Movie Night",
+        desc: "You choose any movie, drama, or serial. I provide popcorn, warm blankets, and zero complaints.",
+        badge: "VIP Privilege"
+      },
+      {
+        id: "coupon-4",
+        icon: "🤫",
+        title: "Win Any Argument Pass",
+        desc: "Show this card and I will instantly surrender and admit you're 100% right (even if you're slightly wrong! 😉).",
+        badge: "Total Victory"
+      },
+      {
+        id: "coupon-5",
+        icon: "✨",
+        title: "One Golden Wish",
+        desc: "Any one wish of your heart, big or small. Consider it an unconditional promise fulfilled by Rahim.",
+        badge: "Eternal Promise"
+      }
+    ]
+  },
+
+  // Section: Golden Scratch Card Secret
+  scratchSecret: {
+    tagline: "A Hidden Promise",
+    title: "The Secret Under The Gold 🪙",
+    description: "Some words are too special to leave out in the open. Scratch off the golden stardust with your finger or mouse...",
+    secretText: "My dearest Fami,\n\nIf I had to live a thousand lifetimes across a thousand galaxies, I would search the stars until I found you in every single one.\n\nYou are my today, my tomorrow, and my forever home.\n\nHappy Birthday, my queen.\n\n— Forever Yours, Rahim ❤️"
+  },
+
   // Section 10: Final Surprise Letter
   finalSurprise: {
     bigHeading: "HAPPY BIRTHDAY, FAMI! ❤️",
