@@ -39,6 +39,7 @@ class InteractionsManager {
     this.setupScratchCard();
     this.setupHiddenTreasures();
     this.setupFinalSurprise();
+    this.setupSaveLetterKeepsake();
     this.setupGeneralScrollObserver();
   }
 
@@ -70,6 +71,9 @@ class InteractionsManager {
         // Play subtle unlock visual
         passwordSection.classList.add('unlocked');
         
+        // Ensure ambient music starts playing automatically
+        this.playAmbientAudio();
+
         // Starlight glow
         if (window.Universe) {
           window.Universe.illuminateStar('Gate Unlocked');
@@ -212,7 +216,7 @@ class InteractionsManager {
   }
 
   // =================================================================
-  // AMBIENT BACKGROUND MUSIC
+  // AMBIENT BACKGROUND MUSIC (DEFAULT: ON)
   // =================================================================
   setupAmbientAudio() {
     const musicBtn = document.getElementById('music-toggle-btn');
@@ -225,6 +229,32 @@ class InteractionsManager {
 
     // Synthetic soft ambient pad fallback if file doesn't exist
     this.setupSyntheticAmbient();
+
+    // Set UI to active "Music: On" by default
+    musicBtn.classList.add('playing');
+    if (musicStatus) musicStatus.textContent = 'Music: On';
+
+    // Attempt playback immediately
+    this.playAmbientAudio();
+
+    // Also trigger on first gesture in case browser blocked autoplay without user touch
+    const startAudioOnFirstGesture = () => {
+      if (!this.isAmbientPlaying) {
+        this.playAmbientAudio();
+      }
+      if (this.synthCtx && this.synthCtx.state === 'suspended') {
+        this.synthCtx.resume();
+      }
+      musicBtn.classList.add('playing');
+      if (musicStatus) musicStatus.textContent = 'Music: On';
+      document.removeEventListener('click', startAudioOnFirstGesture);
+      document.removeEventListener('touchstart', startAudioOnFirstGesture);
+      document.removeEventListener('keydown', startAudioOnFirstGesture);
+    };
+
+    document.addEventListener('click', startAudioOnFirstGesture, { once: true, passive: true });
+    document.addEventListener('touchstart', startAudioOnFirstGesture, { once: true, passive: true });
+    document.addEventListener('keydown', startAudioOnFirstGesture, { once: true, passive: true });
 
     musicBtn.addEventListener('click', () => {
       if (this.isAmbientPlaying) {
@@ -501,6 +531,7 @@ class InteractionsManager {
   setupEternalFlower() {
     const scene = document.getElementById('flower-3d-scene');
     const bud = document.getElementById('flower-bud');
+    const hint = document.getElementById('flower-bloom-hint');
     const revealCard = document.getElementById('flower-reveal-card');
 
     if (!scene || !bud) return;
@@ -510,6 +541,10 @@ class InteractionsManager {
     const toggleBloom = () => {
       isBloomed = !isBloomed;
       scene.classList.toggle('bloomed', isBloomed);
+
+      if (hint) {
+        hint.classList.toggle('hidden', isBloomed);
+      }
 
       if (revealCard) {
         revealCard.classList.toggle('revealed', isBloomed);
@@ -521,17 +556,17 @@ class InteractionsManager {
         }
 
         // Spawn floral stardust particles
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 22; i++) {
           setTimeout(() => {
             const sparkle = document.createElement('div');
             sparkle.className = 'celebration-sparkle';
-            sparkle.textContent = ['🌸', '✨', '✦', '♥'][Math.floor(Math.random() * 4)];
+            sparkle.textContent = ['🌸', '✨', '✦', '♥', '🌹', '💖'][Math.floor(Math.random() * 6)];
             sparkle.style.left = `${Math.random() * 70 + 15}%`;
             sparkle.style.top = `${Math.random() * 60 + 10}%`;
-            sparkle.style.color = ['#F4CADB', '#D9B8E4', '#F6E9D2', '#FFF9FC'][Math.floor(Math.random() * 4)];
+            sparkle.style.color = ['#F4CADB', '#D9B8E4', '#F6E9D2', '#FFF9FC', '#ff758c'][Math.floor(Math.random() * 5)];
             scene.appendChild(sparkle);
             setTimeout(() => sparkle.remove(), 1600);
-          }, i * 70);
+          }, i * 50);
         }
       }
     };
@@ -550,9 +585,9 @@ class InteractionsManager {
       const x = clientX - rect.left - rect.width / 2;
       const y = clientY - rect.top - rect.height / 2;
       
-      const rotX = -(y / rect.height) * 22;
-      const rotY = (x / rect.width) * 22;
-      bud.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${isBloomed ? 1.08 : 1})`;
+      const rotX = -(y / rect.height) * 16;
+      const rotY = (x / rect.width) * 16;
+      bud.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${isBloomed ? 1.06 : 1})`;
     };
 
     scene.addEventListener('mousemove', (e) => {
@@ -964,6 +999,323 @@ class InteractionsManager {
     }
   }
 
+  // =================================================================
+  // FEATURE: KEEPSAKE - SAVE LETTER TO PHONE GALLERY
+  // =================================================================
+  setupSaveLetterKeepsake() {
+    const saveBtn = document.getElementById('save-letter-btn');
+    const overlay = document.getElementById('save-letter-modal-overlay');
+    const closeBtn = document.getElementById('save-letter-modal-close');
+    const previewImg = document.getElementById('save-letter-preview-img');
+    const downloadLink = document.getElementById('save-letter-download-link');
+
+    if (!saveBtn || !overlay) return;
+
+    // Close Modal events
+    const closeModal = () => {
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+    });
+
+    // Helper: Wrap text on canvas
+    const wrapAndDrawText = (ctx, text, x, y, maxWidth, lineHeight) => {
+      const words = text.split(' ');
+      let line = '';
+      let curY = y;
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          ctx.fillText(line.trim(), x, curY);
+          line = words[n] + ' ';
+          curY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), x, curY);
+      return curY + lineHeight;
+    };
+
+    let isGenerating = false;
+
+    saveBtn.addEventListener('click', async () => {
+      if (isGenerating) return;
+      isGenerating = true;
+
+      const originalBtnHTML = saveBtn.innerHTML;
+      saveBtn.innerHTML = `<span class="btn-icon">⏳</span><span class="btn-text">Crafting Your Keepsake...</span><span class="btn-sparkle">✦</span>`;
+      saveBtn.disabled = true;
+
+      try {
+        // Offscreen high-definition canvas (1080 x 1680)
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1680;
+        const ctx = canvas.getContext('2d');
+
+        // 1. Celestial Deep Midnight Gradient Background
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, 1680);
+        bgGrad.addColorStop(0, '#0a0515');
+        bgGrad.addColorStop(0.35, '#190a2a');
+        bgGrad.addColorStop(0.7, '#130822');
+        bgGrad.addColorStop(1, '#080311');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1080, 1680);
+
+        // 2. Cosmic Nebula Radial Glow
+        const nebulaGrad = ctx.createRadialGradient(540, 520, 50, 540, 520, 520);
+        nebulaGrad.addColorStop(0, 'rgba(217, 131, 166, 0.22)');
+        nebulaGrad.addColorStop(0.5, 'rgba(138, 43, 226, 0.12)');
+        nebulaGrad.addColorStop(1, 'transparent');
+        ctx.fillStyle = nebulaGrad;
+        ctx.fillRect(0, 0, 1080, 1680);
+
+        // 3. Twinkling Stardust & Constellations
+        const seededRandom = (seed) => {
+          let s = Math.sin(seed) * 10000;
+          return s - Math.floor(s);
+        };
+        for (let i = 0; i < 240; i++) {
+          const sx = seededRandom(i * 13) * 1080;
+          const sy = seededRandom(i * 29) * 1680;
+          const sr = 0.8 + seededRandom(i * 7) * 2;
+          const sa = 0.3 + seededRandom(i * 17) * 0.65;
+          ctx.fillStyle = i % 4 === 0 ? `rgba(255, 230, 180, ${sa})` : `rgba(255, 255, 255, ${sa})`;
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 4. Luxury Double Gold Filigree Border
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 3.5;
+        ctx.strokeRect(42, 42, 996, 1596);
+
+        ctx.strokeStyle = 'rgba(255, 225, 140, 0.55)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([10, 8]);
+        ctx.strokeRect(58, 58, 964, 1564);
+        ctx.setLineDash([]); // Reset line dash
+
+        // 4 Corner Stars
+        ctx.fillStyle = '#fce49c';
+        ctx.font = '24px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✦', 50, 50);
+        ctx.fillText('✦', 1030, 50);
+        ctx.fillText('✦', 50, 1630);
+        ctx.fillText('✦', 1030, 1630);
+
+        // 5. Header: Universe Tag Pill
+        const pillX = 540;
+        const pillY = 135;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.strokeStyle = 'rgba(244, 202, 219, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(pillX - 170, pillY - 18, 340, 36, 18);
+        } else {
+          ctx.rect(pillX - 170, pillY - 18, 340, 36);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffd166';
+        ctx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('✨ A UNIVERSE MADE FOR FAMI ✨', pillX, pillY);
+
+        // 6. Grand Title: HAPPY BIRTHDAY, FAMI ❤️
+        ctx.fillStyle = '#FFF5F8';
+        ctx.font = 'bold 44px "Playfair Display", Georgia, serif';
+        ctx.shadowColor = 'rgba(255, 117, 143, 0.5)';
+        ctx.shadowBlur = 18;
+        ctx.fillText('HAPPY BIRTHDAY, FAMI ❤️', 540, 215);
+        ctx.shadowBlur = 0; // reset shadow
+
+        // Date Subtitle
+        ctx.fillStyle = '#E8C5D8';
+        ctx.font = 'italic 21px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('November 23, 2026 • An Eternal Love Letter', 540, 260);
+
+        // 7. Royal Wax Seal with Embossed "F" (for Fami)
+        const sealX = 540;
+        const sealY = 335;
+        const sealRad = 36;
+        
+        // Ribbon behind seal
+        ctx.fillStyle = '#a62446';
+        ctx.beginPath();
+        ctx.moveTo(sealX - 16, sealY + 20);
+        ctx.lineTo(sealX - 28, sealY + 68);
+        ctx.lineTo(sealX - 14, sealY + 58);
+        ctx.lineTo(sealX, sealY + 68);
+        ctx.lineTo(sealX, sealY + 20);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(sealX, sealY + 20);
+        ctx.lineTo(sealX + 28, sealY + 68);
+        ctx.lineTo(sealX + 14, sealY + 58);
+        ctx.lineTo(sealX, sealY + 68);
+        ctx.fill();
+
+        // Wax seal body
+        const sealGrad = ctx.createRadialGradient(sealX - 10, sealY - 10, 4, sealX, sealY, sealRad);
+        sealGrad.addColorStop(0, '#e03a68');
+        sealGrad.addColorStop(0.65, '#991b3e');
+        sealGrad.addColorStop(1, '#610a22');
+        ctx.fillStyle = sealGrad;
+        ctx.beginPath();
+        ctx.arc(sealX, sealY, sealRad, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#fce49c';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(sealX, sealY, sealRad - 6, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff4ce';
+        ctx.font = 'bold italic 34px "Playfair Display", Georgia, serif';
+        ctx.fillText('F', sealX, sealY + 2);
+
+        // 8. Semi-translucent Parchment Card for Rahim's Letter
+        ctx.fillStyle = 'rgba(25, 14, 38, 0.72)';
+        ctx.strokeStyle = 'rgba(244, 202, 219, 0.32)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(110, 430, 860, 1020, 24);
+        } else {
+          ctx.rect(110, 430, 860, 1020);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        // 9. Rahim's Letter Body
+        ctx.fillStyle = '#FFF7FA';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+
+        const letterX = 160;
+        const maxTextWidth = 760;
+        let lineY = 480;
+
+        ctx.fillStyle = '#ffb3c6';
+        ctx.font = 'bold italic 34px Georgia, serif';
+        ctx.fillText('Dearest Fami,', letterX, lineY);
+        lineY += 56;
+
+        ctx.fillStyle = '#FFF7FA';
+        ctx.font = 'italic 26px Georgia, serif';
+
+        const paragraphs = [
+          "Today, the entire universe pauses to celebrate the day you arrived into the world.",
+          "Thank you for being my sanctuary, my joy, my soft place to fall, and my brightest inspiration. You make life feel like a cinematic dream, rich with meaning and overflowing with warmth.",
+          "May this new year of your life bring you the deepest happiness, radiant health, dreams fulfilled, and love that surrounds you in every direction.",
+          "Never forget how extraordinary, how cherished, and how deeply loved you are.",
+          "Happy Birthday, with all of my universe."
+        ];
+
+        paragraphs.forEach(para => {
+          lineY = wrapAndDrawText(ctx, para, letterX, lineY, maxTextWidth, 42);
+          lineY += 16; // paragraph spacing
+        });
+
+        // 10. Signature
+        lineY += 15;
+        ctx.fillStyle = '#f7cad0';
+        ctx.font = 'italic 24px Georgia, serif';
+        ctx.fillText('Forever & always,', letterX, lineY);
+        lineY += 44;
+
+        ctx.fillStyle = '#ff6b9d';
+        ctx.font = 'bold italic 48px Georgia, cursive';
+        ctx.fillText('Rahim ❤️', letterX, lineY);
+
+        // 11. Bottom Keepsake Watermark
+        ctx.fillStyle = 'rgba(244, 202, 219, 0.65)';
+        ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Created with boundless eternal love exclusively for Fami by Rahim • November 23, 2026', 540, 1595);
+
+        // Convert to Blob
+        canvas.toBlob(async (blob) => {
+          if (!blob) throw new Error("Could not generate image blob");
+
+          const fileName = 'Rahims_Birthday_Letter_For_Fami.png';
+          const file = new File([blob], fileName, { type: 'image/png' });
+          const url = URL.createObjectURL(blob);
+
+          if (previewImg) previewImg.src = url;
+          if (downloadLink) {
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+          }
+
+          // Open Keepsake Preview Modal
+          overlay.classList.add('active');
+          overlay.setAttribute('aria-hidden', 'false');
+
+          // Try native Share API (Save to Photos / Camera roll on iOS & Android)
+          let sharedSuccess = false;
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                title: "Rahim's Birthday Letter for Fami ❤️",
+                text: "Happy Birthday Fami! An eternal keepsake letter from Rahim ❤️",
+                files: [file]
+              });
+              sharedSuccess = true;
+            } catch (shareErr) {
+              // Share dismissed or cancelled by user, continue to fallback
+            }
+          }
+
+          // Auto-trigger direct download if not shared
+          if (!sharedSuccess) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+
+          if (window.Universe) {
+            window.Universe.illuminateStar('Letter Saved to Gallery');
+            window.Universe.spawnShootingStar();
+          }
+
+          saveBtn.innerHTML = `<span class="btn-icon">❤️</span><span class="btn-text">Letter Saved to Gallery!</span><span class="btn-sparkle">✦</span>`;
+          setTimeout(() => {
+            saveBtn.innerHTML = originalBtnHTML;
+            saveBtn.disabled = false;
+            isGenerating = false;
+          }, 3500);
+
+        }, 'image/png', 1.0);
+
+      } catch (err) {
+        console.error('Error generating keepsake:', err);
+        saveBtn.innerHTML = originalBtnHTML;
+        saveBtn.disabled = false;
+        isGenerating = false;
+      }
+    });
+  }
+
   // Generic Reveal on Scroll Observer
   setupGeneralScrollObserver() {
     const observer = new IntersectionObserver((entries) => {
@@ -1176,23 +1528,30 @@ class InteractionsManager {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     let isDrawing = false;
     let isRevealed = false;
+    let hasScratched = false;
     let width = 0;
     let height = 0;
 
     const resize = () => {
-      width = container.offsetWidth || 400;
-      height = container.offsetHeight || 380;
+      const rect = container.getBoundingClientRect();
+      const rectWidth = Math.round(rect.width) || container.clientWidth || 520;
+      const rectHeight = Math.round(rect.height) || container.clientHeight || 380;
+
+      width = rectWidth;
+      height = rectHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.scale(dpr, dpr);
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      // Do NOT set canvas.style.width or canvas.style.height inline!
+      // CSS width: 100% !important; height: 100% !important; guarantees 100% edge-to-edge coverage!
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       drawFoil();
     };
 
     const drawFoil = () => {
-      // Golden Foil Gradient
+      // Golden Foil Gradient across entire width and height
       const grad = ctx.createLinearGradient(0, 0, width, height);
       grad.addColorStop(0, '#c59b27');
       grad.addColorStop(0.25, '#f4d068');
@@ -1227,17 +1586,54 @@ class InteractionsManager {
       ctx.fillText('(Use finger or mouse)', width / 2, height / 2 + 14);
     };
 
-    // Defer resize until DOM is laid out
-    setTimeout(resize, 200);
+    // Initial resize call
+    setTimeout(resize, 100);
+    setTimeout(resize, 400);
+
+    // ResizeObserver watches container width/height changes dynamically
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const cr = entry.contentRect;
+          if (cr.width > 0 && cr.height > 0) {
+            if (!isRevealed && !hasScratched) {
+              if (Math.abs(cr.width - width) > 1 || Math.abs(cr.height - height) > 1) {
+                resize();
+              }
+            }
+          }
+        }
+      });
+      ro.observe(container);
+    }
+
+    // IntersectionObserver guarantees full coverage as soon as section scrolls into view
+    const scratchSection = document.getElementById('section-scratch');
+    if (scratchSection && window.IntersectionObserver) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isRevealed && !hasScratched) {
+            const rect = container.getBoundingClientRect();
+            if (Math.abs(rect.width - width) > 1 || Math.abs(rect.height - height) > 1) {
+              resize();
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+      io.observe(scratchSection);
+    }
+
     window.addEventListener('resize', () => {
-      if (!isRevealed) resize();
+      if (!isRevealed && !hasScratched) resize();
     });
 
     const scratch = (clientX, clientY) => {
       if (isRevealed) return;
       const rect = canvas.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
+      if (!rect.width || !rect.height) return;
+      hasScratched = true;
+      const x = (clientX - rect.left) * (width / rect.width);
+      const y = (clientY - rect.top) * (height / rect.height);
 
       ctx.globalCompositeOperation = 'destination-out';
       ctx.beginPath();
@@ -1314,7 +1710,7 @@ class InteractionsManager {
     }, { passive: true });
     window.addEventListener('touchend', () => isDrawing = false);
     canvas.addEventListener('touchmove', (e) => {
-      if (isDrawing && e.touches[0]) scratch(e.touches[0].clientX, e.touches[0].clientY);
+      if (e.touches[0]) scratch(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: true });
 
     if (revealBtn) {
@@ -1431,6 +1827,11 @@ class InteractionsManager {
       if (isTransitioning) return;
       isTransitioning = true;
 
+      // Fail-safe unlock timer in case of device throttling
+      const failsafe = setTimeout(() => {
+        isTransitioning = false;
+      }, 2500);
+
       // 1. Current open card folds back into a small folded strip
       overlay.classList.remove('unfolding');
       overlay.classList.add('folding-back');
@@ -1462,6 +1863,7 @@ class InteractionsManager {
 
           // 4. Launch next note out of jar!
           setTimeout(() => {
+            clearTimeout(failsafe);
             isTransitioning = false;
             launchAndOpenNote(currentIndex);
           }, 220);
@@ -1516,17 +1918,27 @@ class InteractionsManager {
     });
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      const handleNext = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         pickAnotherNote();
-      });
+      };
+      nextBtn.addEventListener('click', handleNext);
+      nextBtn.addEventListener('touchend', handleNext);
     }
 
     if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      const handleClose = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         closeNote();
-      });
+      };
+      closeBtn.addEventListener('click', handleClose);
+      closeBtn.addEventListener('touchend', handleClose);
     }
 
     overlay.addEventListener('click', (e) => {

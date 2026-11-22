@@ -231,25 +231,18 @@ html, body {
   }
 
   .flower-3d-scene {
-    width: 240px !important;
-    height: 280px !important;
+    width: 250px !important;
+    height: 250px !important;
   }
 
   .flower-bud {
-    top: 35px !important;
+    top: 20px !important;
   }
 
   /* Floating controls mobile repositioning */
   .floating-controls {
     top: calc(0.75rem + var(--safe-top));
     right: calc(0.75rem + var(--safe-right));
-  }
-
-  .secrets-tracker-pill {
-    top: calc(0.75rem + var(--safe-top));
-    left: calc(0.75rem + var(--safe-left));
-    font-size: 0.75rem;
-    padding: 0.4rem 0.75rem;
   }
 
   .constellation-meter {
@@ -338,6 +331,23 @@ html, body {
   .chirkut-body-text {
     font-size: 1.05rem !important;
     line-height: 1.5 !important;
+  }
+
+  /* Keepsake Letter Mobile */
+  .save-letter-btn {
+    width: 100% !important;
+    max-width: 330px !important;
+    font-size: 0.95rem !important;
+    padding: 0.9rem 1.4rem !important;
+  }
+
+  .save-letter-modal-card {
+    padding: 1.5rem 1.1rem !important;
+    max-width: 94vw !important;
+  }
+
+  .save-letter-preview-wrapper {
+    max-width: 275px !important;
   }
 }
 

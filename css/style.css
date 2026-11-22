@@ -164,40 +164,9 @@ body {
   fill: currentColor;
 }
 
-/* Secret Discovery Counter Pill */
+/* Secret Discovery Counter Pill (Disabled for clean UI) */
 .secrets-tracker-pill {
-  position: fixed;
-  top: calc(1rem + env(safe-area-inset-top, 0px));
-  left: calc(1rem + env(safe-area-inset-left, 0px));
-  z-index: 100;
-  background: rgba(36, 27, 53, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  color: var(--color-lavender);
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: all var(--transition-fast);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-8px);
-}
-
-.secrets-tracker-pill.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.secrets-tracker-pill .icon {
-  color: var(--color-blush-pink);
-  font-size: 0.9rem;
+  display: none !important;
 }
 
 /* Constellation Progress Meter */
@@ -1978,8 +1947,9 @@ body {
 /* 3D Flower Scene */
 .flower-3d-scene {
   position: relative;
-  width: 280px;
-  height: 320px;
+  width: 270px;
+  height: 270px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1990,13 +1960,35 @@ body {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  transition: transform 0.4s ease;
+}
+
+.flower-halo-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 190px;
+  height: 190px;
+  transform: translate(-50%, -55%);
+  background: radial-gradient(circle, rgba(244, 202, 219, 0.28) 0%, rgba(217, 184, 228, 0.14) 50%, transparent 75%);
+  border-radius: 50%;
+  filter: blur(24px);
+  pointer-events: none;
+  transition: all 1.4s ease;
+}
+
+.flower-3d-scene.bloomed .flower-halo-glow {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.45) 0%, rgba(244, 202, 219, 0.28) 45%, rgba(255, 215, 0, 0.16) 70%, transparent 80%);
+  filter: blur(28px);
 }
 
 .flower-stem-wrapper {
   position: absolute;
-  bottom: 20px;
+  bottom: 8px;
   width: 60px;
-  height: 140px;
+  height: 110px;
   display: flex;
   justify-content: center;
   pointer-events: none;
@@ -2004,40 +1996,71 @@ body {
 }
 
 .flower-stem {
-  width: 6px;
+  width: 7px;
   height: 100%;
-  background: linear-gradient(180deg, #8ba888 0%, #557a52 100%);
+  background: linear-gradient(180deg, #609966 0%, #386641 100%);
   border-radius: 4px;
-  box-shadow: inset 1px 0 2px rgba(255, 255, 255, 0.4), 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 1px 0 2px rgba(255, 255, 255, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
 }
 
 .flower-leaf {
   position: absolute;
-  width: 32px;
-  height: 18px;
-  background: linear-gradient(135deg, #99ba96 0%, #52754f 100%);
+  width: 36px;
+  height: 20px;
+  background: linear-gradient(135deg, #74a872 0%, #386641 100%);
   border-radius: 50% 0 50% 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.flower-leaf .leaf-vein {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%);
 }
 
 .leaf-left {
-  top: 40px;
-  left: 2px;
-  transform: rotate(-35deg);
+  top: 32px;
+  left: -8px;
+  transform: rotate(-30deg);
 }
 
 .leaf-right {
-  top: 70px;
-  right: 2px;
-  transform: rotate(35deg) scaleX(-1);
+  top: 58px;
+  right: -8px;
+  transform: rotate(30deg) scaleX(-1);
 }
+
+.flower-calyx {
+  position: absolute;
+  top: -6px;
+  width: 28px;
+  height: 14px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.flower-calyx .sepal {
+  width: 7px;
+  height: 14px;
+  background: linear-gradient(180deg, #52796f 0%, #2f3e46 100%);
+  border-radius: 50% 50% 20% 20%;
+}
+
+.flower-calyx .s1 { transform: rotate(-25deg); }
+.flower-calyx .s2 { transform: translateY(-2px); }
+.flower-calyx .s3 { transform: rotate(25deg); }
 
 /* Concentric 3D Petal Layers */
 .flower-bud {
   position: absolute;
-  top: 45px;
-  width: 140px;
-  height: 140px;
+  top: 25px;
+  width: 145px;
+  height: 145px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2047,48 +2070,48 @@ body {
 }
 
 .flower-3d-scene:hover .flower-bud {
-  transform: rotateX(10deg) rotateY(-10deg) scale(1.05);
+  transform: rotateX(8deg) rotateY(-8deg) scale(1.04);
 }
 
-/* Stamen Glow */
+/* Radiant Stardust Core (Golden Stamen) */
 .flower-core-glow {
   position: absolute;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, #ffde59 50%, #ff9f43 100%);
-  box-shadow: 0 0 25px #ffde59, 0 0 45px rgba(244, 202, 219, 0.8);
+  background: radial-gradient(circle, #fffdf0 0%, #ffd166 45%, #ef476f 95%);
+  box-shadow: 0 0 20px rgba(255, 209, 102, 0.8), 0 0 40px rgba(244, 202, 219, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5;
-  transition: transform 1.5s ease, opacity 1s ease;
-  transform: scale(0.6);
-  opacity: 0.6;
+  transition: transform 1.4s ease, opacity 1s ease, box-shadow 1.4s ease;
+  transform: scale(0.65);
+  opacity: 0.7;
 }
 
-.bloomed .flower-core-glow {
-  transform: scale(1.2);
+.flower-3d-scene.bloomed .flower-core-glow {
+  transform: scale(1.25);
   opacity: 1;
-  box-shadow: 0 0 35px #ffde59, 0 0 60px rgba(244, 202, 219, 0.95);
+  box-shadow: 0 0 35px #ffd166, 0 0 65px rgba(255, 182, 193, 0.95);
 }
 
 .stamen-particles {
   position: absolute;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   font-size: 0.75rem;
-  color: #fff;
+  color: #fff9fc;
   opacity: 0;
   transition: opacity 1s ease;
 }
 
-.bloomed .stamen-particles {
+.flower-3d-scene.bloomed .stamen-particles {
   opacity: 1;
   animation: pulse-soft 2s infinite ease-in-out;
 }
 
-/* Petals Base Structure */
+/* Organic Velvet Rose Petals */
 .petal-layer {
   position: absolute;
   inset: 0;
@@ -2101,48 +2124,48 @@ body {
 
 .petal {
   position: absolute;
-  width: 48px;
-  height: 72px;
-  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
-  background: radial-gradient(ellipse at 50% 85%, #d9a6b5 0%, #f4cadb 45%, #fff9fc 90%);
-  box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.7), 0 6px 18px rgba(20, 12, 30, 0.45);
+  border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+  background: radial-gradient(ellipse at 50% 80%, #f7cad0 0%, #ff758f 35%, #c9184a 85%, #800f2f 100%);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.65), inset 0 -3px 8px rgba(128, 15, 47, 0.4), 0 6px 16px rgba(20, 10, 30, 0.5);
   transform-origin: bottom center;
-  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1), background 1.5s ease;
+  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease;
 }
 
 /* Layer Inner (Tight Bud) */
 .layer-inner { z-index: 4; }
 .layer-inner .petal {
-  width: 36px;
-  height: 54px;
-  background: radial-gradient(ellipse at 50% 85%, #b87b8d 0%, #e8a7bc 55%, #fff9fc 95%);
+  width: 38px;
+  height: 56px;
+  background: radial-gradient(ellipse at 50% 80%, #ffccd5 0%, #ff4d6d 40%, #a4133c 85%, #590d22 100%);
 }
 
-.p-in-1 { transform: rotateZ(0deg) rotateX(15deg) translateZ(8px); }
-.p-in-2 { transform: rotateZ(72deg) rotateX(15deg) translateZ(8px); }
-.p-in-3 { transform: rotateZ(144deg) rotateX(15deg) translateZ(8px); }
-.p-in-4 { transform: rotateZ(216deg) rotateX(15deg) translateZ(8px); }
-.p-in-5 { transform: rotateZ(288deg) rotateX(15deg) translateZ(8px); }
+.p-in-1 { transform: rotateZ(0deg) rotateX(16deg) translateZ(8px); }
+.p-in-2 { transform: rotateZ(72deg) rotateX(16deg) translateZ(8px); }
+.p-in-3 { transform: rotateZ(144deg) rotateX(16deg) translateZ(8px); }
+.p-in-4 { transform: rotateZ(216deg) rotateX(16deg) translateZ(8px); }
+.p-in-5 { transform: rotateZ(288deg) rotateX(16deg) translateZ(8px); }
 
-/* Layer Mid */
+/* Layer Mid (Silky Overlap) */
 .layer-mid { z-index: 3; }
 .layer-mid .petal {
-  width: 44px;
-  height: 64px;
+  width: 46px;
+  height: 68px;
+  background: radial-gradient(ellipse at 50% 80%, #fff0f3 0%, #ff758f 38%, #c9184a 85%, #590d22 100%);
 }
 
-.p-mid-1 { transform: rotateZ(30deg) rotateX(25deg) translateZ(14px); }
-.p-mid-2 { transform: rotateZ(90deg) rotateX(25deg) translateZ(14px); }
-.p-mid-3 { transform: rotateZ(150deg) rotateX(25deg) translateZ(14px); }
-.p-mid-4 { transform: rotateZ(210deg) rotateX(25deg) translateZ(14px); }
-.p-mid-5 { transform: rotateZ(270deg) rotateX(25deg) translateZ(14px); }
-.p-mid-6 { transform: rotateZ(330deg) rotateX(25deg) translateZ(14px); }
+.p-mid-1 { transform: rotateZ(30deg) rotateX(24deg) translateZ(14px); }
+.p-mid-2 { transform: rotateZ(90deg) rotateX(24deg) translateZ(14px); }
+.p-mid-3 { transform: rotateZ(150deg) rotateX(24deg) translateZ(14px); }
+.p-mid-4 { transform: rotateZ(210deg) rotateX(24deg) translateZ(14px); }
+.p-mid-5 { transform: rotateZ(270deg) rotateX(24deg) translateZ(14px); }
+.p-mid-6 { transform: rotateZ(330deg) rotateX(24deg) translateZ(14px); }
 
-/* Layer Outer */
+/* Layer Outer (Full Velvet Petals) */
 .layer-outer { z-index: 2; }
 .layer-outer .petal {
-  width: 52px;
-  height: 78px;
+  width: 56px;
+  height: 82px;
+  background: radial-gradient(ellipse at 50% 80%, #fff5f7 0%, #ff8fa3 35%, #d90429 80%, #640d14 100%);
 }
 
 .p-out-1 { transform: rotateZ(0deg) rotateX(32deg) translateZ(18px); }
@@ -2157,41 +2180,42 @@ body {
 /* ===================================================================
    BLOOMED STATE (PETALS FULLY UNFURL IN 3D)
    =================================================================== */
-.bloomed .p-in-1 { transform: rotateZ(0deg) rotateX(35deg) translateZ(16px); }
-.bloomed .p-in-2 { transform: rotateZ(72deg) rotateX(35deg) translateZ(16px); }
-.bloomed .p-in-3 { transform: rotateZ(144deg) rotateX(35deg) translateZ(16px); }
-.bloomed .p-in-4 { transform: rotateZ(216deg) rotateX(35deg) translateZ(16px); }
-.bloomed .p-in-5 { transform: rotateZ(288deg) rotateX(35deg) translateZ(16px); }
+.flower-3d-scene.bloomed .p-in-1 { transform: rotateZ(0deg) rotateX(38deg) translateZ(16px); }
+.flower-3d-scene.bloomed .p-in-2 { transform: rotateZ(72deg) rotateX(38deg) translateZ(16px); }
+.flower-3d-scene.bloomed .p-in-3 { transform: rotateZ(144deg) rotateX(38deg) translateZ(16px); }
+.flower-3d-scene.bloomed .p-in-4 { transform: rotateZ(216deg) rotateX(38deg) translateZ(16px); }
+.flower-3d-scene.bloomed .p-in-5 { transform: rotateZ(288deg) rotateX(38deg) translateZ(16px); }
 
-.bloomed .p-mid-1 { transform: rotateZ(30deg) rotateX(55deg) translateZ(24px) scale(1.08); }
-.bloomed .p-mid-2 { transform: rotateZ(90deg) rotateX(55deg) translateZ(24px) scale(1.08); }
-.bloomed .p-mid-3 { transform: rotateZ(150deg) rotateX(55deg) translateZ(24px) scale(1.08); }
-.bloomed .p-mid-4 { transform: rotateZ(210deg) rotateX(55deg) translateZ(24px) scale(1.08); }
-.bloomed .p-mid-5 { transform: rotateZ(270deg) rotateX(55deg) translateZ(24px) scale(1.08); }
-.bloomed .p-mid-6 { transform: rotateZ(330deg) rotateX(55deg) translateZ(24px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-1 { transform: rotateZ(30deg) rotateX(58deg) translateZ(26px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-2 { transform: rotateZ(90deg) rotateX(58deg) translateZ(26px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-3 { transform: rotateZ(150deg) rotateX(58deg) translateZ(26px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-4 { transform: rotateZ(210deg) rotateX(58deg) translateZ(26px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-5 { transform: rotateZ(270deg) rotateX(58deg) translateZ(26px) scale(1.08); }
+.flower-3d-scene.bloomed .p-mid-6 { transform: rotateZ(330deg) rotateX(58deg) translateZ(26px) scale(1.08); }
 
-.bloomed .p-out-1 { transform: rotateZ(0deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-2 { transform: rotateZ(45deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-3 { transform: rotateZ(90deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-4 { transform: rotateZ(135deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-5 { transform: rotateZ(180deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-6 { transform: rotateZ(225deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-7 { transform: rotateZ(270deg) rotateX(78deg) translateZ(32px) scale(1.15); }
-.bloomed .p-out-8 { transform: rotateZ(315deg) rotateX(78deg) translateZ(32px) scale(1.15); }
+.flower-3d-scene.bloomed .p-out-1 { transform: rotateZ(0deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-2 { transform: rotateZ(45deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-3 { transform: rotateZ(90deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-4 { transform: rotateZ(135deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-5 { transform: rotateZ(180deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-6 { transform: rotateZ(225deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-7 { transform: rotateZ(270deg) rotateX(80deg) translateZ(36px) scale(1.18); }
+.flower-3d-scene.bloomed .p-out-8 { transform: rotateZ(315deg) rotateX(80deg) translateZ(36px) scale(1.18); }
 
 .flower-bloom-hint {
-  position: absolute;
-  bottom: 0px;
-  font-size: 0.82rem;
+  margin-top: 1.4rem;
+  font-size: 0.88rem;
   color: var(--color-champagne);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-align: center;
   animation: pulse-soft 2s infinite ease-in-out;
   transition: opacity 0.5s ease;
+  user-select: none;
 }
 
-.bloomed + .flower-bloom-hint,
-.flower-3d-scene.bloomed .flower-bloom-hint {
+.flower-3d-scene.bloomed ~ .flower-bloom-hint,
+.flower-bloom-hint.hidden {
   opacity: 0;
   pointer-events: none;
 }
@@ -3193,13 +3217,15 @@ body.universe-climax {
 
 .scratch-canvas {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
   z-index: 5;
   cursor: grab;
   touch-action: none;
   transition: opacity 0.8s ease;
+  display: block;
 }
 
 .scratch-canvas:active {
@@ -3556,16 +3582,19 @@ body.universe-climax {
 .chirkut-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(14, 9, 24, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(12, 7, 20, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 10000;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
   transition: opacity 0.35s ease;
+  touch-action: manipulation;
 }
 
 .chirkut-overlay.active {
@@ -3719,6 +3748,8 @@ body.universe-climax {
   display: flex;
   justify-content: center;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .chirkut-pick-btn {
@@ -3726,19 +3757,262 @@ body.universe-climax {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 0.75rem 1.8rem;
+  min-height: 48px;
+  padding: 0.85rem 2rem;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, #441f54 0%, #6b2659 50%, #8e2b5b 100%);
   border: 1.5px solid #F4CADB;
   color: #FFF9FC;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(184, 50, 98, 0.4);
   transition: all 0.3s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  z-index: 12;
+  pointer-events: auto;
+}
+
+.chirkut-pick-btn * {
+  pointer-events: none;
 }
 
 .chirkut-pick-btn:hover {
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 10px 28px rgba(184, 50, 98, 0.6), 0 0 20px rgba(244, 202, 219, 0.6);
+}
+
+.chirkut-pick-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* ===================================================================
+   KEEPSAKE FEATURE: SAVE LETTER TO PHONE GALLERY
+   =================================================================== */
+.save-letter-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.8rem;
+  width: 100%;
+}
+
+.save-letter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.05rem 2.4rem;
+  background: linear-gradient(135deg, #d4af37 0%, #ff758f 50%, #c9184a 100%);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(201, 24, 74, 0.45), 0 0 25px rgba(212, 175, 55, 0.35);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+  min-height: 52px;
+}
+
+.save-letter-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.65s ease;
+}
+
+.save-letter-btn:hover::before {
+  left: 100%;
+}
+
+.save-letter-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(201, 24, 74, 0.6), 0 0 35px rgba(212, 175, 55, 0.55);
+}
+
+.save-letter-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.save-letter-btn .btn-icon {
+  font-size: 1.3rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.save-letter-btn .btn-sparkle {
+  color: #fff1a8;
+  font-size: 1.1rem;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.save-letter-hint {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  font-family: var(--font-body);
+  color: var(--color-champagne);
+  opacity: 0.9;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+/* Keepsake Modal Overlay */
+.save-letter-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  background: rgba(10, 6, 20, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.save-letter-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.save-letter-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  background: linear-gradient(145deg, #1f122e 0%, #11081f 100%);
+  border: 1.5px solid rgba(244, 202, 219, 0.45);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 45px rgba(255, 117, 143, 0.3);
+  padding: 1.8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.save-letter-modal-overlay.active .save-letter-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.save-letter-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.save-letter-modal-close:hover {
+  background: rgba(255, 117, 143, 0.35);
+  transform: rotate(90deg);
+}
+
+.save-letter-modal-header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.save-letter-modal-header .modal-badge {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  background: rgba(212, 175, 55, 0.18);
+  padding: 0.25rem 0.8rem;
+  border-radius: var(--radius-full);
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.save-letter-modal-header .modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+.save-letter-modal-header .modal-subtitle {
+  font-size: 0.88rem;
+  color: var(--color-blush-pink);
+  opacity: 0.9;
+}
+
+.save-letter-preview-wrapper {
+  width: 100%;
+  max-width: 330px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 25px rgba(212, 175, 55, 0.25);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  margin-bottom: 1.2rem;
+  background: #0d061a;
+}
+
+.save-letter-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.save-letter-modal-actions {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 330px;
+  justify-content: center;
+}
+
+.modal-download-btn {
+  width: 100%;
+  text-align: center;
+  padding: 0.85rem 1.4rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.save-letter-modal-tip {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: 0.9rem;
+  max-width: 330px;
+  line-height: 1.4;
 }

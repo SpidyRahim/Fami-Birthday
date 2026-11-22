@@ -45,19 +45,13 @@
   <!-- ===============================================================
        FLOATING CONTROLS (Top Bar & Counters)
        =============================================================== -->
-  <!-- Secret Discovery Counter Pill -->
-  <div id="secrets-tracker-pill" class="secrets-tracker-pill" aria-label="Secrets discovered">
-    <span class="icon">✨</span>
-    <span>Secrets: <strong id="tracker-count">0/5</strong></span>
-  </div>
-
-  <!-- Floating Controls (Ambient Music Toggle) -->
+  <!-- Floating Controls (Ambient Music Toggle - Default ON) -->
   <aside class="floating-controls" aria-label="Audio Controls">
-    <button id="music-toggle-btn" class="control-btn" type="button" aria-label="Toggle ambient music">
+    <button id="music-toggle-btn" class="control-btn playing" type="button" aria-label="Toggle ambient music">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
       </svg>
-      <span id="music-status-text">Music: Off</span>
+      <span id="music-status-text">Music: On</span>
     </button>
   </aside>
 
@@ -502,16 +496,24 @@
 
           <div class="flower-3d-scene" id="flower-3d-scene" role="button" tabindex="0"
             aria-label="Tap to bloom the flower">
-            <!-- 3D Flower Stem & Leaves -->
+            <!-- Luminous Aura Behind Flower -->
+            <div class="flower-halo-glow" aria-hidden="true"></div>
+
+            <!-- Botanical Stem & Graceful Leaves -->
             <div class="flower-stem-wrapper" aria-hidden="true">
               <div class="flower-stem"></div>
-              <div class="flower-leaf leaf-left"></div>
-              <div class="flower-leaf leaf-right"></div>
+              <div class="flower-leaf leaf-left"><span class="leaf-vein"></span></div>
+              <div class="flower-leaf leaf-right"><span class="leaf-vein"></span></div>
+              <div class="flower-calyx">
+                <span class="sepal s1"></span>
+                <span class="sepal s2"></span>
+                <span class="sepal s3"></span>
+              </div>
             </div>
 
-            <!-- Concentric 3D Petal Layers -->
+            <!-- Velvet Petals Bud & Blossom -->
             <div class="flower-bud" id="flower-bud" aria-hidden="true">
-              <!-- Radiant Stamen Core -->
+              <!-- Golden Stardust Core -->
               <div class="flower-core-glow">
                 <div class="stamen-light"></div>
                 <div class="stamen-particles">
@@ -519,7 +521,7 @@
                 </div>
               </div>
 
-              <!-- Inner Layer (Tight Petals) -->
+              <!-- Inner Layer (Tight Bud Petals) -->
               <div class="petal-layer layer-inner">
                 <div class="petal p-in-1"></div>
                 <div class="petal p-in-2"></div>
@@ -528,7 +530,7 @@
                 <div class="petal p-in-5"></div>
               </div>
 
-              <!-- Middle Layer (Overlapping Petals) -->
+              <!-- Middle Layer (Silky Petals) -->
               <div class="petal-layer layer-mid">
                 <div class="petal p-mid-1"></div>
                 <div class="petal p-mid-2"></div>
@@ -550,12 +552,12 @@
                 <div class="petal p-out-8"></div>
               </div>
             </div>
-
-            <!-- Interactive Pulse Prompt -->
-            <div class="flower-bloom-hint" id="flower-bloom-hint">
-              <span>✨ Tap to Bloom Your Flower ✨</span>
-            </div>
           </div>
+
+          <!-- Interactive Pulse Prompt (Cleanly below the flower scene, zero overlap!) -->
+          <p class="flower-bloom-hint" id="flower-bloom-hint">
+            <span>✨ Tap to Bloom Your Flower ✨</span>
+          </p>
 
           <!-- Emotional Reveal Card -->
           <div class="flower-reveal-card glass-card" id="flower-reveal-card">
@@ -734,49 +736,6 @@
           </div>
 
           <p class="jar-tap-hint" id="jar-tap-hint">✨ Tap the Love Jar to pull out a folded note ✨</p>
-
-          <!-- 3D Unfolding Love Note / Chirkut Display Modal -->
-          <div class="chirkut-overlay" id="chirkut-overlay" aria-hidden="true">
-            <div class="chirkut-paper-card" id="chirkut-paper-card">
-              <!-- Corner Decorative Stars -->
-              <span class="chirkut-corner tl">✦</span>
-              <span class="chirkut-corner tr">✦</span>
-              <span class="chirkut-corner bl">✦</span>
-              <span class="chirkut-corner br">✦</span>
-
-              <div class="chirkut-inner-content">
-                <div class="chirkut-header">
-                  <span class="chirkut-badge" id="chirkut-badge">Whisper #1 of 10</span>
-                  <button type="button" class="chirkut-close-btn" id="chirkut-close-btn" aria-label="Close note">✕</button>
-                </div>
-
-                <h3 class="chirkut-title" id="chirkut-title">Your Smile, My Sun</h3>
-                
-                <div class="chirkut-divider" aria-hidden="true">
-                  <span class="divider-line"></span>
-                  <span class="divider-heart">💖</span>
-                  <span class="divider-line"></span>
-                </div>
-
-                <p class="chirkut-body-text" id="chirkut-body-text">
-                  The way your eyes crinkle when you laugh with your whole heart... that single view holds more light and joy than all the billion stars in this universe combined.
-                </p>
-
-                <div class="chirkut-signoff">
-                  <span class="signoff-sub">Forever & always,</span>
-                  <span class="signoff-name">Rahim ❤️</span>
-                </div>
-
-                <div class="chirkut-actions">
-                  <button type="button" class="chirkut-pick-btn" id="chirkut-next-btn">
-                    <span>Pick Another Note</span>
-                    <span class="btn-icon">💌</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -860,6 +819,16 @@
           </div>
         </div>
 
+        <!-- Keepsake Feature: Save Letter to Phone Gallery -->
+        <div class="save-letter-wrapper reveal-on-scroll">
+          <button id="save-letter-btn" class="save-letter-btn" type="button" aria-label="Save Rahim's Love Letter to your phone gallery">
+            <span class="btn-icon">📸</span>
+            <span class="btn-text">Save Letter to Phone Gallery</span>
+            <span class="btn-sparkle">✦</span>
+          </button>
+          <p class="save-letter-hint">✨ Keep Rahim's letter in your phone forever ✨</p>
+        </div>
+
         <div class="replay-btn-wrapper">
           <button id="replay-universe-btn" class="btn-primary" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -878,6 +847,50 @@
 
     </main>
 
+  </div>
+
+  <!-- ===============================================================
+       3D UNFOLDING LOVE NOTE / CHIRKUT DISPLAY MODAL (TOP-LEVEL VIEWPORT)
+       =============================================================== -->
+  <div class="chirkut-overlay" id="chirkut-overlay" aria-hidden="true">
+    <div class="chirkut-paper-card" id="chirkut-paper-card">
+      <!-- Corner Decorative Stars -->
+      <span class="chirkut-corner tl">✦</span>
+      <span class="chirkut-corner tr">✦</span>
+      <span class="chirkut-corner bl">✦</span>
+      <span class="chirkut-corner br">✦</span>
+
+      <div class="chirkut-inner-content">
+        <div class="chirkut-header">
+          <span class="chirkut-badge" id="chirkut-badge">Whisper #1 of 10</span>
+          <button type="button" class="chirkut-close-btn" id="chirkut-close-btn" aria-label="Close note">✕</button>
+        </div>
+
+        <h3 class="chirkut-title" id="chirkut-title">Your Smile, My Sun</h3>
+        
+        <div class="chirkut-divider" aria-hidden="true">
+          <span class="divider-line"></span>
+          <span class="divider-heart">💖</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <p class="chirkut-body-text" id="chirkut-body-text">
+          The way your eyes crinkle when you laugh with your whole heart... that single view holds more light and joy than all the billion stars in this universe combined.
+        </p>
+
+        <div class="chirkut-signoff">
+          <span class="signoff-sub">Forever & always,</span>
+          <span class="signoff-name">Rahim ❤️</span>
+        </div>
+
+        <div class="chirkut-actions">
+          <button type="button" class="chirkut-pick-btn" id="chirkut-next-btn">
+            <span>Pick Another Note</span>
+            <span class="btn-icon">💌</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ===============================================================
@@ -905,6 +918,29 @@
       <h3 id="secret-modal-title" class="secret-modal-title">Secret Discovered</h3>
       <div id="secret-modal-text" class="secret-modal-text"></div>
       <button id="secret-modal-close" class="btn-primary" type="button">Keep Exploring</button>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       KEEPSAKE LETTER PREVIEW / SAVE MODAL (TOP-LEVEL VIEWPORT)
+       =============================================================== -->
+  <div class="save-letter-modal-overlay" id="save-letter-modal-overlay" aria-hidden="true">
+    <div class="save-letter-modal-card">
+      <button class="save-letter-modal-close" id="save-letter-modal-close" type="button" aria-label="Close Preview">✕</button>
+      <div class="save-letter-modal-header">
+        <span class="modal-badge">✨ Keepsake For Fami ✨</span>
+        <h3 class="modal-title">Letter Saved For You ❤️</h3>
+        <p class="modal-subtitle">Your personal birthday letter card from Rahim is ready.</p>
+      </div>
+      <div class="save-letter-preview-wrapper" id="save-letter-preview-wrapper">
+        <img id="save-letter-preview-img" alt="Birthday Letter for Fami from Rahim" class="save-letter-preview-img" />
+      </div>
+      <div class="save-letter-modal-actions">
+        <a id="save-letter-download-link" class="btn-primary modal-download-btn" download="Rahims_Birthday_Letter_For_Fami.png">
+          <span>⬇ Download Image Again</span>
+        </a>
+      </div>
+      <p class="save-letter-modal-tip">💡 Tip: On iPhone/Android, if it didn't save automatically, press and hold the image to "Save to Photos".</p>
     </div>
   </div>
 
